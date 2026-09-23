@@ -1,0 +1,526 @@
+<title>Qasim's Side Quest Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Press+Start+2P&family=VT323&display=swap">
+<style>
+/* ===== TOKENS \2014  deliberate single-theme arcade CRT ===== */
+:root{
+  --void:#060B08; --void-2:#0A120D;
+  --panel:#0B1510; --panel-2:#101C15;
+  --line:#1D3A28; --line-hot:#2E7A22;
+  --phosphor:#39FF14; --phosphor-2:#8CFF7A; --dim:#2E7A22;
+  --magenta:#FF2D95; --amber:#FFC247;
+  --bone:#CDE8C6; --bone-2:#7FA87A;
+  --pixel:"Press Start 2P", ui-monospace, monospace;
+  --crt:"VT323", "IBM Plex Mono", ui-monospace, monospace;
+  --mono:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --gut:16px; --maxw:1060px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--void); color:var(--bone);
+  font-family:var(--mono); font-size:15px; line-height:1.7;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+
+/* ===== CRT ATMOSPHERE ===== */
+.crt-scan,.crt-glow{position:fixed;inset:0;pointer-events:none}
+.crt-scan{z-index:200;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.30) 2px 4px);mix-blend-mode:multiply}
+.crt-glow{z-index:201;
+  background:radial-gradient(ellipse 120% 80% at 50% 40%,rgba(57,255,20,.055),rgba(0,0,0,0) 60%),
+             radial-gradient(ellipse 100% 100% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.62) 100%);
+  animation:flicker 5.5s steps(30) infinite}
+@keyframes flicker{0%,100%{opacity:1}3%{opacity:.86}6%{opacity:1}41%{opacity:.93}44%{opacity:1}78%{opacity:.88}81%{opacity:1}}
+
+/* ===== LAYOUT ===== */
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
+section{padding-block:clamp(40px,7vw,76px)}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:0 0 26px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.sec-head h2{font-family:var(--pixel);font-size:clamp(.72rem,2.3vw,1rem);color:var(--phosphor);margin:0;letter-spacing:.02em;line-height:1.5;text-shadow:0 0 12px rgba(57,255,20,.45);text-wrap:balance}
+.sec-head .meta{font-family:var(--crt);font-size:1.15rem;color:var(--bone-2);letter-spacing:.06em;margin-left:auto}
+
+/* ===== HUD ===== */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:linear-gradient(180deg,var(--void) 72%,rgba(6,11,8,.88));border-bottom:1px solid var(--line);backdrop-filter:blur(3px)}
+.hud-in{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut);padding-block:9px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--crt);font-size:1.15rem;letter-spacing:.07em}
+.hud .tag{color:var(--phosphor);text-shadow:0 0 10px rgba(57,255,20,.5)}
+.hud .sep{color:var(--line-hot)}
+.hud .lvl{color:var(--amber)}
+.hud .boot{color:var(--bone-2);flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.snd{font-family:var(--crt);font-size:1.05rem;letter-spacing:.08em;background:transparent;border:1px solid var(--line-hot);color:var(--bone-2);padding:2px 10px;cursor:pointer}
+.snd:hover{color:var(--phosphor);border-color:var(--phosphor)}
+.snd[aria-pressed="true"]{color:var(--phosphor);border-color:var(--phosphor);box-shadow:0 0 12px rgba(57,255,20,.3)}
+/* scroll progress */
+.prog{position:absolute;left:0;bottom:-1px;height:2px;background:var(--phosphor);box-shadow:0 0 10px var(--phosphor);width:0}
+
+/* ===== HERO ===== */
+.hero{display:grid;grid-template-columns:minmax(0,1.14fr) minmax(0,.8fr);gap:clamp(24px,4vw,46px);align-items:center;padding-block:clamp(32px,6vw,60px)}
+.name{font-family:var(--pixel);font-size:clamp(1.1rem,4.6vw,3.05rem);line-height:1.3;margin:0 0 18px;color:var(--phosphor);
+  white-space:nowrap;word-spacing:-.34em;
+  text-shadow:2px 0 0 rgba(255,45,149,.55),-2px 0 0 rgba(57,255,20,.35),0 0 22px rgba(57,255,20,.5)}
+@media (max-width:760px){.name{font-size:clamp(1.3rem,7.4vw,3.4rem)}}
+.class-line{font-family:var(--crt);font-size:clamp(.98rem,2.02vw,1.26rem);color:var(--amber);letter-spacing:.03em;margin:0 0 16px;line-height:1.45}
+.class-line em{font-style:normal;font-size:.76em;color:var(--bone-2);letter-spacing:.14em;margin-right:.2em}
+.class-line .dot{color:var(--line-hot);margin:0 .34em}
+.class-line b{color:var(--magenta);font-weight:400}
+@media (min-width:761px){.class-line{white-space:nowrap}}
+.pitch{max-width:48ch;margin:0 0 12px;color:var(--bone)}
+.pitch strong{color:var(--phosphor-2);font-weight:600}
+.cursor{display:inline-block;width:.58em;height:1.05em;vertical-align:-.16em;background:var(--phosphor);margin-left:4px;animation:blink 1.06s steps(1) infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.scroll-hint{font-family:var(--crt);font-size:1.15rem;letter-spacing:.14em;color:var(--line-hot);margin-top:26px;display:flex;align-items:center;gap:9px}
+.scroll-hint i{display:inline-block;animation:bob 1.7s ease-in-out infinite;font-style:normal}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ===== TUNER (drag slider) ===== */
+.tuner{position:relative;aspect-ratio:4/5;border:1px solid var(--line-hot);overflow:hidden;background:var(--panel);
+  box-shadow:4px 0 0 rgba(255,45,149,.28),-4px 0 0 rgba(57,255,20,.18);touch-action:pan-y}
+.tuner img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;object-fit:cover;display:block}
+.t-back{filter:grayscale(1) sepia(1) hue-rotate(-16deg) saturate(3.6) contrast(1.08) brightness(.92)}
+.t-front{clip-path:inset(0 calc(100% - var(--x)) 0 0);filter:grayscale(1) sepia(1) hue-rotate(58deg) saturate(3) contrast(1.14) brightness(.86)}
+.tuner::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.32) 2px 4px)}
+.t-seam{position:absolute;top:0;bottom:0;left:var(--x);width:2px;z-index:3;background:var(--phosphor);box-shadow:0 0 18px var(--phosphor);pointer-events:none}
+.t-grip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--crt);font-size:1.02rem;letter-spacing:.06em;color:var(--void);background:var(--phosphor);padding:3px 7px;white-space:nowrap}
+.t-range{position:absolute;inset:0;width:100%;height:100%;margin:0;z-index:4;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none;background:transparent}
+.t-range::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:100%}
+.t-range::-moz-range-thumb{width:44px;height:100%;border:0;background:transparent}
+.tuner:focus-within{outline:2px solid var(--phosphor);outline-offset:3px}
+.t-cap{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;justify-content:space-between;gap:10px;
+  font-family:var(--crt);font-size:1rem;letter-spacing:.06em;padding:26px 10px 8px;pointer-events:none;
+  background:linear-gradient(0deg,rgba(6,11,8,.95),rgba(6,11,8,0))}
+.t-cap b{font-weight:400;color:var(--phosphor)}
+.t-cap i{font-style:normal;color:#FF8A3D}
+
+/* ===== QUEST LOG ===== */
+.log{display:grid;gap:0;border:1px solid var(--line)}
+.quest{border-bottom:1px solid var(--line);padding:22px var(--gut) 26px;display:grid;gap:14px}
+.quest:last-child{border-bottom:0}
+.q-top{display:grid;grid-template-columns:auto 1fr auto;gap:4px 16px;align-items:baseline}
+.q-no{font-family:var(--crt);font-size:1.2rem;color:var(--line-hot);letter-spacing:.06em}
+.q-ttl{font-family:var(--crt);font-size:clamp(1.28rem,2.7vw,1.6rem);letter-spacing:.04em;color:var(--phosphor);line-height:1.25;margin:0}
+.q-ttl small{display:block;font-size:.8em;color:var(--bone-2);letter-spacing:.05em}
+.q-state{font-family:var(--crt);font-size:1.02rem;letter-spacing:.09em;color:var(--dim);white-space:nowrap}
+.q-state.on{color:var(--amber);animation:pulse 1.9s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+.q-obj{margin:0;max-width:68ch;color:var(--bone)}
+.q-obj::before{content:"OBJECTIVE ";font-family:var(--crt);font-size:1.05rem;letter-spacing:.1em;color:var(--magenta)}
+/* result strip \2014  the numbers, encoded as an object not a card */
+.res{display:flex;flex-wrap:wrap;gap:0;border-left:2px solid var(--amber);padding-left:0}
+.res div{padding:6px 18px 6px 14px;border-right:1px solid var(--line);min-width:0}
+.res div:last-child{border-right:0}
+.res b{display:block;font-family:var(--crt);font-size:1.6rem;line-height:1.1;color:var(--amber);font-variant-numeric:tabular-nums}
+.res span{display:block;font-size:.73rem;color:var(--bone-2);line-height:1.45;letter-spacing:.02em}
+.q-log{margin:0;max-width:68ch;font-size:.92rem;color:var(--bone-2)}
+.loot{display:flex;flex-wrap:wrap;gap:6px}
+.loot span{font-family:var(--crt);font-size:1rem;letter-spacing:.05em;border:1px solid var(--line-hot);color:var(--bone-2);padding:1px 9px}
+.loot span::before{content:"+ ";color:var(--amber)}
+
+/* ===== BUILDS ===== */
+.builds{display:grid;grid-template-columns:repeat(auto-fit,minmax(286px,1fr));gap:14px}
+.build{border:1px solid var(--line);background:var(--panel);padding:18px;display:grid;gap:9px;align-content:start}
+.build .bh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.build h3{font-family:var(--crt);font-size:1.34rem;letter-spacing:.04em;color:var(--phosphor);margin:0;line-height:1.25}
+.build .stack{font-family:var(--crt);font-size:1rem;color:var(--line-hot);letter-spacing:.05em}
+.build p{margin:0;font-size:.87rem;color:var(--bone-2);line-height:1.62}
+.build .prize{font-family:var(--crt);font-size:1.02rem;letter-spacing:.06em;color:var(--amber)}
+.build .go{justify-self:start;margin-top:3px;font-family:var(--crt);font-size:1.1rem;letter-spacing:.09em;color:var(--phosphor);text-decoration:none;border:1px solid var(--line-hot);padding:2px 11px;transition:background .16s,color .16s,border-color .16s}
+.build .go:hover,.build .go:focus-visible{background:var(--phosphor);color:var(--void);border-color:var(--phosphor)}
+.build .go:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.build .prize::before{content:"\2605  "}
+
+/* ===== SIDE QUESTS ===== */
+.sides{display:grid;grid-template-columns:repeat(auto-fit,minmax(244px,1fr));gap:18px}
+.shot{position:relative;border:1px solid var(--line-hot);background:var(--panel);overflow:hidden;aspect-ratio:4/3;margin-bottom:12px}
+.shot::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.34) 2px 4px)}
+.shot img{display:block;width:100%;height:100%;max-width:100%;object-fit:cover;
+  filter:grayscale(1) sepia(1) hue-rotate(58deg) saturate(3.2) contrast(1.12) brightness(.82);transition:filter .5s ease}
+.shot:hover img{filter:none}
+.side h3{font-family:var(--crt);font-size:1.32rem;letter-spacing:.05em;color:var(--phosphor);margin:0 0 4px;line-height:1.25}
+.side p{margin:0;font-size:.86rem;color:var(--bone-2);line-height:1.62;max-width:42ch}
+
+/* ===== PRESS START ===== */
+.start{text-align:center;border-top:1px solid var(--line);padding-block:clamp(48px,8vw,86px)}
+.start .ps{font-family:var(--pixel);font-size:clamp(.9rem,3.3vw,1.5rem);color:var(--amber);margin:0 0 14px;line-height:1.5;animation:pulse 1.7s ease-in-out infinite;text-shadow:0 0 20px rgba(255,194,71,.45)}
+.start p.sub{max-width:46ch;margin:0 auto 28px;color:var(--bone-2);font-size:.9rem}
+.mail{display:inline-flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;border:1px solid var(--phosphor);box-shadow:0 0 26px rgba(57,255,20,.18)}
+.mail code{font-family:var(--crt);font-size:clamp(1.12rem,3.4vw,1.5rem);letter-spacing:.05em;color:var(--phosphor);padding:9px 16px;user-select:all}
+.copy{font-family:var(--crt);font-size:1.1rem;letter-spacing:.09em;background:var(--phosphor);color:var(--void);border:0;padding:10px 18px;cursor:pointer;align-self:stretch}
+.copy:hover{background:var(--phosphor-2)}
+.copy:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.coin{font-family:var(--crt);font-size:1.1rem;color:var(--line-hot);letter-spacing:.14em;margin-top:34px}
+
+/* ===== TOASTS ===== */
+.toasts{position:fixed;left:var(--gut);bottom:calc(var(--gut) + env(safe-area-inset-bottom,0px));z-index:150;display:grid;gap:8px;max-width:min(330px,calc(100vw - 32px))}
+.toast{border:1px solid var(--amber);background:var(--void-2);padding:11px 14px;box-shadow:0 0 30px rgba(255,194,71,.22);animation:slide .32s cubic-bezier(.2,.9,.3,1) both}
+.toast .t{font-family:var(--pixel);font-size:.5rem;color:var(--amber);letter-spacing:.02em;line-height:1.7}
+.toast .d{font-family:var(--crt);font-size:1.08rem;color:var(--bone);letter-spacing:.04em;margin-top:3px}
+@keyframes slide{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+
+/* ===== FIRE MODE (konami) ===== */
+body.fire{--phosphor:#FF6B1A;--phosphor-2:#FFC247;--dim:#8C3A12;--line:#4A2412;--line-hot:#A84A18;--bone:#FFE4C9;--bone-2:#C9925F;--void:#0D0603;--void-2:#140803;--panel:#180A04;--panel-2:#1F0E06}
+body.fire .shot img,body.fire .t-front{filter:grayscale(1) sepia(1) hue-rotate(-18deg) saturate(3.4) contrast(1.15) brightness(.86)}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .tuner{aspect-ratio:1/1;order:-1}
+  .q-top{grid-template-columns:auto 1fr}
+  .q-state{grid-column:2;justify-self:start}
+  .hud .boot{display:none}
+  .res{border-left-width:2px}
+  .res div{padding-inline:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+
+<div class="crt-scan" aria-hidden="true"></div>
+<div class="crt-glow" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="hud-in">
+    <span class="tag">QASIM.EXE</span>
+    <span class="sep">//</span>
+    <span class="lvl">LVL 9</span>
+    <span class="sep">//</span>
+    <span class="boot" id="boot">booting&hellip;</span>
+    <button class="snd" id="snd" type="button" aria-pressed="false">SOUND: OFF</button>
+  </div>
+  <div class="prog" id="prog" aria-hidden="true"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="nm">
+    <div>
+      <h1 class="name" id="nm">QASIM MURAD</h1>
+      <p class="class-line"><em>CLASS</em>Product Builder <span class="dot">&#183;</span> <em>SUBCLASS</em><b>Professional Side-Quester</b></p>
+      <p class="pitch">CS + Economics at <strong>Minerva University</strong>, class of 2027. Most recently, a TPM intern at <strong>Microsoft</strong>. Before that, product at <strong>Atarino</strong>, <strong>Wefunder</strong> and <strong>McKinsey</strong>.</p>
+      <p class="pitch">I also set myself on fire. Recreationally.<span class="cursor" aria-hidden="true"></span></p>
+      <p class="scroll-hint"><i aria-hidden="true">&#9660;</i> SCROLL, BECAUSE THERE IS NO REASON NOT TO :)</p>
+    </div>
+
+    <div class="tuner" id="tuner" style="--x:60%">
+      <img class="t-back" src="img/fire.jpg" alt="Qasim spinning a lit fire staff at night, flames trailing from both ends.">
+      <img class="t-front" src="img/me.jpg" alt="Portrait of Qasim Murad outdoors in San Francisco.">
+      <div class="t-seam" aria-hidden="true"><span class="t-grip">&#9664; DRAG &#9654;</span></div>
+      <input class="t-range" id="tunerRange" type="range" min="0" max="100" value="60"
+             aria-label="Drag to wipe between the portrait and the fire dancing photo">
+      <div class="t-cap"><b>THE CV</b><i>THE WEEKEND</i></div>
+    </div>
+  </section>
+
+
+  <!-- ============ QUEST LOG ============ -->
+  <section aria-labelledby="ql">
+    <div class="sec-head">
+      <h2 id="ql">QUEST LOG</h2>
+      <span class="meta">5 cleared &#183; newest first</span>
+    </div>
+    <div class="log">
+
+      <article class="quest" id="q-msft">
+        <div class="q-top">
+          <span class="q-no">01</span>
+          <h3 class="q-ttl">MICROSOFT<small>Technical Program Manager Intern &#183; Azure Cloud Operations + Innovation &#183; Redmond</small></h3>
+          <span class="q-state on">&#9670; MOST RECENT</span>
+        </div>
+        <p class="q-obj">Datacentre onboarding was slipping on problems nobody owned. Find the one handoff worth fixing, then build the thing that fixes it.</p>
+        <div class="res">
+          <div><b>+30%</b><span>more defects caught than manual review</span></div>
+          <div><b>&#8722;35%</b><span>triage effort</span></div>
+          <div><b>&#8722;20%</b><span>onboarding cycle time</span></div>
+          <div><b>1,000+</b><span>escalation tickets analysed</span></div>
+        </div>
+        <p class="q-log">Built an AI onboarding agent end to end &#8212; it reads milestone data, detects missing dependencies, escalates to the right owner and writes the remediation guidance. I mapped the whole workflow across 8 stages and 6 infrastructure teams first, tracing dependencies through facility inventory, power and capacity-planning systems to find 4 recurring data-quality and ownership gaps. Backtested it against 69 real onboarding cases and 66+ colocation environments before shipping it into team readiness reviews, then presented the pilot and its results to leadership.</p>
+        <div class="loot"><span>Agentic Workflows</span><span>Program Management</span><span>Stakeholder Alignment</span><span>SQL</span><span>Evals &amp; Backtesting</span><span>Azure</span></div>
+      </article>
+
+      <article class="quest">
+        <div class="q-top">
+          <span class="q-no">02</span>
+          <h3 class="q-ttl">ATARINO<small>Product Manager Intern &#183; AI voice companion &#183; Palo Alto</small></h3>
+          <span class="q-state">&#10003; CLEARED</span>
+        </div>
+        <p class="q-obj">A conversational voice agent for 200,000+ drivers that people open once. Make them open it again.</p>
+        <div class="res">
+          <div><b>3&#215;</b><span>sign-ups from a voice referral loop</span></div>
+          <div><b>3&#215;</b><span>daily active users</span></div>
+          <div><b>+35%</b><span>activation</span></div>
+          <div><b>&#8722;25%</b><span>churn</span></div>
+        </div>
+        <p class="q-log">Owned the roadmap and the evaluation framework &#8212; what "good" meant before we built anything. Ran 40+ A/B tests across prompt sequencing, profile capture and the first-session flow, and turned 20+ usability studies into PRDs for context-aware behaviours: streaks, rewards, weather alerts, proactive voice prompts. Instrumented the telemetry and cohort dashboards myself, which is how the referral loop got found in the first place.</p>
+        <div class="loot"><span>Product Roadmap</span><span>A/B Testing</span><span>PRDs</span><span>User Research</span><span>LLM Integration</span><span>Growth Loops</span><span>Figma</span></div>
+      </article>
+
+      <article class="quest">
+        <div class="q-top">
+          <span class="q-no">03</span>
+          <h3 class="q-ttl">AI CONSENSUS<small>Head of Technology &#183; Asia's largest student-run AI safety hackathon</small></h3>
+          <span class="q-state">&#10003; CLEARED</span>
+        </div>
+        <p class="q-obj">Run a red-teaming hackathon in four cities. At the same time. On a student budget.</p>
+        <div class="res">
+          <div><b>1,000+</b><span>participants</span></div>
+          <div><b>4</b><span>cities, simultaneously</span></div>
+          <div><b>$100K+</b><span>sponsorship secured</span></div>
+          <div><b>14</b><span>engineers &amp; ops directed</span></div>
+        </div>
+        <p class="q-log">Built the dev tooling and judging infrastructure, ran partnerships with AWS, Perplexity and Upstage, and delivered the event across Taipei, Seoul, Paris and San Francisco at once &#8212; model evaluation and red-teaming challenges for a thousand people. Logistics turns out to be a product problem: the schedule is the interface.</p>
+        <div class="loot"><span>Partnership Development</span><span>Program Management</span><span>AI Safety</span><span>Dev Tooling</span><span>Sponsorship</span><span>Community Building</span></div>
+      </article>
+
+      <article class="quest">
+        <div class="q-top">
+          <span class="q-no">04</span>
+          <h3 class="q-ttl">McKINSEY &amp; COMPANY<small>Product Strategy Intern &#183; gender equity in STEM &#183; Taipei</small></h3>
+          <span class="q-state">&#10003; CLEARED</span>
+        </div>
+        <p class="q-obj">Find out why women leave STEM careers in Taiwan, then hand over something an organisation can actually act on.</p>
+        <div class="res">
+          <div><b>1.7&#215;</b><span>gender-retention gap uncovered</span></div>
+          <div><b>3,000+</b><span>employees surveyed</span></div>
+          <div><b>10</b><span>organisations adopted the playbook</span></div>
+          <div><b>12mo</b><span>roadmap, MoSCoW prioritised</span></div>
+        </div>
+        <p class="q-log">Partnered with Taiwan's only female McKinsey partner. Turned 8 executive interviews into product requirements, a Figma issue tree and a phased roadmap, and benchmarked 10 leading Taiwanese firms against the survey data. The analysis was the easy half &#8212; the hard half was earning enough trust to be told the truth.</p>
+        <div class="loot"><span>Consulting</span><span>Market Research</span><span>Stakeholder Interviews</span><span>MoSCoW</span><span>Public Speaking</span><span>Figma</span></div>
+      </article>
+
+      <article class="quest">
+        <div class="q-top">
+          <span class="q-no">05</span>
+          <h3 class="q-ttl">WEFUNDER<small>Product Manager Intern &#183; YC-backed fintech &#183; San Francisco</small></h3>
+          <span class="q-state">&#10003; CLEARED</span>
+        </div>
+        <p class="q-obj">Three in ten payment attempts were failing. Find out why, and make the failure explain itself.</p>
+        <div class="res">
+          <div><b>30%</b><span>of payments were silently failing</span></div>
+          <div><b>+25%</b><span>conversion after redesign</span></div>
+          <div><b>+40%</b><span>7-day retention</span></div>
+          <div><b>1,800</b><span>req/s under 50ms, load-tested</span></div>
+        </div>
+        <p class="q-log">Ran discovery across wallet, identity and payment orchestration &#8212; 50+ user interviews cross-referenced against on-chain telemetry &#8212; and traced the drop-off to trust and data-quality failures, not pricing. Converted the edge cases across pending, confirmed and failed transactions into prioritised requirements and fallback flows, guided a 4-person team through eng and compliance, and prototyped an LLM support layer on async Flask services that explains a failed transaction in plain language and tells you what to do next.</p>
+        <div class="loot"><span>Payments</span><span>User Interviews</span><span>Flask</span><span>LLM Support Tooling</span><span>Compliance</span><span>Load Testing</span><span>Web3</span></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ BUILDS ============ -->
+  <section aria-labelledby="bl">
+    <div class="sec-head">
+      <h2 id="bl">THINGS I BUILT ANYWAY</h2>
+      <span class="meta">6 shipped &#183; nights, weekends, hackathons</span>
+    </div>
+    <div class="builds">
+
+      <article class="build">
+        <div class="bh"><h3>Hangouts for Goose</h3><span class="stack">React &#183; TypeScript</span></div>
+        <p>A gay social app where small public plans go ahead once enough people quietly opt in &mdash; attendees stay hidden until it actually happens, backed by face verification. The point: meeting up shouldn&#8217;t depend on being the one brave enough to post first.</p>
+        <a class="go" href="https://goose-hangouts.vercel.app/" target="_blank" rel="noopener">LIVE DEMO &#8599;</a>
+      </article>
+
+      <article class="build">
+        <div class="bh"><h3>HabitFlow</h3><span class="stack">Next.js &#183; Vercel</span></div>
+        <p>A meeting-intelligence dashboard built during my Microsoft internship. It scores recurring meetings 0&#8211;100 from calendar history, ranks the low-value series with the reasons why, and hands the reclaimed time back as focus blocks.</p>
+        <a class="go" href="https://habit-flow-delta-two.vercel.app/dashboard" target="_blank" rel="noopener">LIVE DEMO &#8599;</a>
+      </article>
+
+      <article class="build">
+        <div class="bh"><h3>OrbitFlow</h3><span class="stack">VS Code &#183; TypeScript</span></div>
+        <p>An editor extension for neurodivergent developers that lowers the cost of context-switching with focus sessions and task anchoring &mdash; so losing your place doesn&#8217;t mean losing the thread.</p>
+        <p class="prize">Accessibility Award, Microsoft intern hackathon</p>
+        <a class="go" href="https://www.loom.com/share/90c71f7bd95748fb99dcd125a3d3201d" target="_blank" rel="noopener">WATCH DEMO &#8599;</a>
+      </article>
+
+      <article class="build">
+        <div class="bh"><h3>Easy Setup for Stripe</h3><span class="stack">Next.js &#183; TypeScript</span></div>
+        <p>A product concept where an AI assistant walks older first-time sellers through account setup one plain question at a time &mdash; every required check still happens, and there&#8217;s a trusted-helper option for the people who&#8217;d rather do it with their kid on the phone.</p>
+        <a class="go" href="https://easy-setup-concept.vercel.app/" target="_blank" rel="noopener">LIVE DEMO &#8599;</a>
+      </article>
+
+      <article class="build">
+        <div class="bh"><h3>mispitools</h3><span class="stack">R &#183; open source</span></div>
+        <p>Contributor to a statistical toolkit for likelihood-ratio-based identification decisions in missing-person cases from Argentina&#8217;s 1970s dictatorship. Some code exists so families get an answer decades later.</p>
+        <a class="go" href="https://github.com/MarsicoFL/mispitools" target="_blank" rel="noopener">GITHUB &#8599;</a>
+      </article>
+
+      <article class="build">
+        <div class="bh"><h3>Robotic Arm Piano Planner</h3><span class="stack">Python</span></div>
+        <p>An A* motion planner for a simulated 2-link arm playing a keyboard. Found a heuristic everyone treats as admissible, formally proved it isn&#8217;t, and cut motion cost 18.6% against greedy. 67 passing tests.</p>
+        <a class="go" href="https://github.com/qasimmurad/-Simulated-2-link-planar-robotic-arm-that-plays-a-piano-keyboard" target="_blank" rel="noopener">GITHUB &#8599;</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ SIDE QUESTS ============ -->
+  <section aria-labelledby="sq">
+    <div class="sec-head">
+      <h2 id="sq">SIDE QUESTS</h2>
+      <span class="meta">nobody asked me to do these</span>
+    </div>
+    <div class="sides">
+
+      <article class="side">
+        <div class="shot"><img src="img/protest.jpg" alt="Qasim at a protest in Pakistan holding a hand-painted placard in a crowd."></div>
+        <h3>&#127987;&#65039;&#8205;&#127752; LOUD IN A QUIET PLACE</h3>
+        <p>Advocating for LGBTQ+ rights in Pakistan. Showing up somewhere that showing up still costs something.</p>
+      </article>
+
+      <article class="side">
+        <div class="shot"><img src="img/hlab.jpg" alt="The HLAB cohort in Japan posed on stage under a purple HLAB logo."></div>
+        <h3>&#127800; HLAB, JAPAN</h3>
+        <p>Mentoring high-school students through a residential summer programme, in a language I was learning as I went.</p>
+      </article>
+
+      <article class="side">
+        <div class="shot"><img src="img/taiwan.jpg" alt="Qasim with a class of primary-school students in Taiwan holding up hand-drawn flags."></div>
+        <h3>&#127481;&#127484; TEACHING IN TAIWAN</h3>
+        <p>A room of eleven-year-olds, two hand-drawn flags and a lot of glue. Still the toughest audience I've presented to.</p>
+      </article>
+
+
+    </div>
+  </section>
+
+
+  <!-- ============ PRESS START ============ -->
+  <section class="start" id="start">
+    <p class="ps">PRESS START</p>
+    <p class="sub">Hiring, building something strange, or just want to know how the fire staff works &#8212; I answer everything.</p>
+    <div class="mail">
+      <code id="mailText">murad@uni.minerva.edu</code>
+      <button class="copy" id="copyBtn" type="button">COPY</button>
+    </div>
+    <p class="coin">INSERT COIN TO CONTINUE &#183; QASIM MURAD &#183; SAN FRANCISCO</p>
+  </section>
+
+</main>
+
+<div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+(function(){
+  "use strict";
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- sound (opt-in, off by default) ---------- */
+  var soundOn = false, actx = null;
+  var sndBtn = document.getElementById("snd");
+  function blip(freq, dur, type){
+    if(!soundOn) return;
+    try{
+      if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = type || "square"; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.045, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + dur);
+    }catch(e){}
+  }
+  sndBtn.addEventListener("click", function(){
+    soundOn = !soundOn;
+    sndBtn.setAttribute("aria-pressed", String(soundOn));
+    sndBtn.textContent = "SOUND: " + (soundOn ? "ON" : "OFF");
+    if(soundOn){ blip(660,.07); setTimeout(function(){ blip(990,.09); }, 80); }
+  });
+
+  /* ---------- boot ticker ---------- */
+  var boot = document.getElementById("boot");
+  var lines = [
+    "level = quests cleared + things built",
+    "5 quests cleared \u00B7 6 things built anyway",
+    "fire resistance: nominal",
+    "karachi \u2192 san francisco \u2192 taipei \u2192 tokyo \u2192 redmond",
+    "try the konami code. you know the one."
+  ];
+  boot.textContent = lines[0];
+  var li = 0;
+  if(!reduced) setInterval(function(){ li = (li+1) % lines.length; boot.textContent = lines[li]; }, 4400);
+
+  /* ---------- toast ---------- */
+  var toasts = document.getElementById("toasts");
+  function toast(title, detail){
+    var t = document.createElement("div");
+    t.className = "toast";
+    var a = document.createElement("div"); a.className = "t"; a.textContent = title;
+    var b = document.createElement("div"); b.className = "d"; b.textContent = detail;
+    t.appendChild(a); t.appendChild(b);
+    toasts.appendChild(t);
+    setTimeout(function(){
+      t.style.transition = "opacity .4s, transform .4s";
+      t.style.opacity = "0"; t.style.transform = "translateX(-18px)";
+      setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 420);
+    }, 4000);
+  }
+
+  /* ---------- hero tuner: drag to wipe ---------- */
+  var tuner = document.getElementById("tuner");
+  var range = document.getElementById("tunerRange");
+  range.addEventListener("input", function(){
+    tuner.style.setProperty("--x", Number(range.value) + "%");
+  });
+
+  /* ---------- scroll progress ---------- */
+  var prog = document.getElementById("prog");
+  var ticking = false;
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+    prog.style.width = (p * 100).toFixed(2) + "%";
+    ticking = false;
+  }
+  window.addEventListener("scroll", function(){
+    if(!ticking){ ticking = true; window.requestAnimationFrame(onScroll); }
+  }, {passive:true});
+  onScroll();
+
+  /* ---------- copy email (no navigation) ---------- */
+  var copyBtn = document.getElementById("copyBtn");
+  var mail = document.getElementById("mailText").textContent.trim();
+  copyBtn.addEventListener("click", function(){
+    function done(ok){
+      copyBtn.textContent = ok ? "COPIED \u2713" : "SELECT IT \u2191";
+      blip(880,.08);
+      setTimeout(function(){ copyBtn.textContent = "COPY"; }, 2200);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(mail).then(function(){ done(true); }, function(){ done(false); });
+    } else {
+      try{
+        var ta = document.createElement("textarea");
+        ta.value = mail; ta.setAttribute("readonly","");
+        ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta); done(ok);
+      }catch(e){ done(false); }
+    }
+  });
+
+  /* ---------- konami: fire mode ---------- */
+  var seq = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+  var pos = 0;
+  document.addEventListener("keydown", function(e){
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if(k === seq[pos]){
+      pos++;
+      if(pos === seq.length){
+        pos = 0;
+        var on = document.body.classList.toggle("fire");
+        toast(on ? "FIRE MODE ENGAGED" : "FIRE MODE OFF",
+              on ? "enter the code again to go back" : "back to phosphor green");
+        blip(520,.1); setTimeout(function(){blip(780,.1);},110); setTimeout(function(){blip(1040,.22);},220);
+      }
+    } else {
+      pos = (k === seq[0]) ? 1 : 0;
+    }
+  });
+})();
+</script>

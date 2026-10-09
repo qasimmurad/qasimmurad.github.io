@@ -17,7 +17,7 @@
   --fig-ui: #0D99FF; --fig-ui-dark: #0C8CE9;
   --desk: #2C2C2C; --desk-dot: #3A3A3A;
   --face: #C0C0C0; --hi: #FFFFFF; --lt: #DFDFDF; --lo: #808080; --dk: #000000;
-  --ink: #000000; --ink-2: #3D3D3D; --ink-3: #6E6E6E; --paper: #FFFFFF; --tip: #FFFFE1; --canvas: #E5E5E5; --canvas-dot: #CFCFCF;
+  --ink: #000000; --ink-2: #3D3D3D; --ink-3: #4A4A4A; --paper: #FFFFFF; --tip: #FFFFE1; --canvas: #E5E5E5; --canvas-dot: #CFCFCF;
   --font-ui: Tahoma, Verdana, "DejaVu Sans", "Segoe UI", Arial, sans-serif;
   --font-px: "Silkscreen", "Courier New", monospace;
   --gutter: 16px;
@@ -39,17 +39,17 @@ p { margin: 0; }
 
 /* ---------- Win95 primitives ---------- */
 .win { background: var(--face); color: var(--ink); border: 2px solid; border-color: var(--hi) var(--dk) var(--dk) var(--hi); box-shadow: inset -1px -1px var(--lo), inset 1px 1px var(--lt); }
-.tb { display: flex; align-items: center; gap: 6px; height: 24px; padding: 0 4px 0 6px; margin: 2px; color: var(--hi); font: 700 13px/1 var(--font-ui); background: linear-gradient(90deg, var(--fig-purple), var(--fig-blue)); user-select: none; }
-.tb.o { background: linear-gradient(90deg, var(--fig-red), var(--fig-orange)); }
-.tb.g { background: linear-gradient(90deg, #06A86A, var(--fig-green)); }
+.tb { display: flex; align-items: center; gap: 6px; height: 24px; padding: 0 4px 0 6px; margin: 2px; color: var(--hi); font: 700 13px/1 var(--font-ui); background: linear-gradient(90deg, #7B3FE4, var(--fig-blue)); user-select: none; }
+.tb.o { background: linear-gradient(90deg, #C93A12, var(--fig-orange)); }
+.tb.g { background: linear-gradient(90deg, #047A4E, var(--fig-green)); }
 .tb.p { background: linear-gradient(90deg, #6E3BD6, var(--fig-purple)); }
 .tb .t { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 0 rgba(0,0,0,.25); }
 .tb .ic { width: 14px; height: 14px; flex: none; }
 .wb { display: flex; gap: 2px; }
 .btn { display: inline-block; background: var(--face); color: var(--ink); border: 2px solid; border-color: var(--hi) var(--dk) var(--dk) var(--hi); box-shadow: inset -1px -1px var(--lo), inset 1px 1px var(--lt); font: 13px/1 var(--font-ui); padding: 6px 14px; min-width: 76px; cursor: pointer; text-align: center; user-select: none; }
-.btn:focus-visible { outline: 1px dotted var(--ink); outline-offset: -5px; }
 .btn.pressed, .btn:active { border-color: var(--dk) var(--hi) var(--hi) var(--dk); box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--lt); transform: translate(1px,1px); }
 .btn.primary { outline: 1px solid var(--dk); outline-offset: -3px; }
+.btn:focus-visible, .btn.primary:focus-visible { outline: 2px solid var(--dk); outline-offset: 2px; box-shadow: inset -1px -1px var(--lo), inset 1px 1px var(--lt), 0 0 0 4px var(--hi); }
 .wb .btn { min-width: 0; width: 18px; height: 16px; padding: 0; font: 700 11px/1 var(--font-ui); display: grid; place-items: center; }
 .sunk { background: var(--paper); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); box-shadow: inset 1px 1px var(--dk), inset -1px -1px var(--lt); }
 .group { border: 1px solid var(--lo); box-shadow: inset 1px 1px var(--hi), 1px 1px var(--hi); padding: 12px 10px 10px; position: relative; margin-top: 8px; }
@@ -62,7 +62,7 @@ p { margin: 0; }
 .status .cell { flex: 1; border: 1px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); padding: 3px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .status .cell.s { flex: 0 0 auto; }
 .px { font-family: var(--font-px); letter-spacing: .02em; }
-.chip { display: inline-block; font: 700 11px/1 var(--font-px); letter-spacing: .06em; text-transform: uppercase; padding: 5px 8px 4px; color: var(--hi); background: var(--fig-ui); border: 1px solid var(--dk); }
+.chip { display: inline-block; font: 700 11px/1 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px 3px; color: var(--dk); background: var(--acc, var(--fig-ui)); border: 1px solid var(--dk); }
 
 /* Figma pixel mark: a 2x3 grid */
 .fmark { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 1px; width: 16px; height: 24px; }
@@ -77,10 +77,16 @@ p { margin: 0; }
 /* ---------- Hero ---------- */
 .hero { padding-block: 28px 20px; display: grid; justify-items: center; }
 .hero .win { width: 100%; max-width: 760px; }
-.hero .body { padding: 18px 18px 16px; display: grid; gap: 14px; }
+.hero .body { display: grid; grid-template-columns: 112px 1fr; }
+.wizpanel { background: linear-gradient(180deg, var(--fig-red) 0 20%, var(--fig-orange) 20% 40%, var(--fig-purple) 40% 60%, var(--fig-blue) 60% 80%, var(--fig-green) 80%); border-right: 2px solid var(--dk); display: grid; justify-items: center; align-content: start; padding-top: 22px; }
+.wizpanel .fmark { width: 40px; height: 60px; gap: 2px; filter: drop-shadow(1px 1px 0 var(--dk)); }
+.wizpanel .fmark i { outline: 1px solid rgba(0,0,0,.35); }
+.wizmain { padding: 18px 18px 16px; display: grid; gap: 14px; min-width: 0; }
+@media (max-width: 640px) { .hero .body { grid-template-columns: 1fr; } .wizpanel { display: none; } }
 .logo { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
-.logo .fmark { width: 40px; height: 60px; gap: 2px; }
-.logo h1 { font: 700 clamp(34px, 7vw, 64px)/1 var(--font-px); letter-spacing: .04em; }
+.logo h1 { font: 700 32px/1 var(--font-px); letter-spacing: .04em; }
+@media (min-width: 520px) { .logo h1 { font-size: 48px; } }
+@media (min-width: 900px) { .logo h1 { font-size: 64px; } }
 .logo h1 span { display: inline-block; }
 .logo h1 span:nth-child(1) { color: var(--fig-red); } .logo h1 span:nth-child(2) { color: var(--fig-orange); } .logo h1 span:nth-child(3) { color: var(--fig-purple); } .logo h1 span:nth-child(4) { color: var(--fig-ui); } .logo h1 span:nth-child(5) { color: var(--fig-green); } .logo h1 span:nth-child(6) { color: var(--ink); }
 .lede { font-size: 18px; line-height: 1.4; max-width: 60ch; }
@@ -93,25 +99,34 @@ p { margin: 0; }
 
 /* ---------- Stage ---------- */
 .track { position: relative; height: 1000vh; margin-inline: calc(-1 * var(--gutter)); }
-.stage { justify-content: center; position: sticky; top: env(safe-area-inset-top, 0px); height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 8px var(--gutter) 8px; gap: 8px; }
+.stage { position: relative; justify-content: center; position: sticky; top: env(safe-area-inset-top, 0px); height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 8px var(--gutter) 8px; gap: 8px; }
 .prog { flex: none; }
-.prog .labels { display: flex; justify-content: space-between; font: 700 11px/1 var(--font-px); letter-spacing: .06em; text-transform: uppercase; color: var(--lt); padding: 0 2px 5px; }
-.prog .labels span { opacity: .5; }
-.prog .labels span.on { opacity: 1; color: var(--hi); text-shadow: 0 0 6px var(--fig-ui); }
+.prog .labels { display: flex; justify-content: space-between; font: 700 11px/1 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--lt); padding: 0 2px 5px; }
+.prog .labels span { opacity: .7; }
+.prog .labels span.on { opacity: 1; color: var(--hi); text-shadow: 0 0 6px var(--acc, var(--fig-ui)); }
+.stage { --acc: var(--fig-purple); }
+.stage[data-ch="1"] { --acc: var(--fig-ui); } .stage[data-ch="2"] { --acc: var(--fig-orange); } .stage[data-ch="3"] { --acc: var(--fig-green); }
+.autopill { position: absolute; right: calc(var(--gutter) + 4px); top: 44px; z-index: 30; background: var(--tip); border: 1px solid var(--dk); box-shadow: 2px 2px 0 rgba(0,0,0,.5); padding: 5px 8px; font: 700 11px/1 var(--font-ui); letter-spacing: .04em; text-transform: uppercase; }
 .prog .bar { height: 18px; background: var(--face); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); box-shadow: inset 1px 1px var(--dk); padding: 2px; position: relative; overflow: hidden; }
-.prog .fill { height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--fig-ui) 0 8px, var(--face) 8px 10px); transition: width .1s linear; }
+.prog .fill { height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--acc, var(--fig-ui)) 0 8px, var(--face) 8px 10px); transition: width .1s linear; }
 .mockbox { flex: 1; position: relative; min-height: 0; overflow: hidden; }
 .desk { position: absolute; left: 50%; top: 50%; width: 1000px; height: 620px; transform: translate(-50%,-50%) scale(var(--s, 1)) translate(var(--ox, 0px), var(--oy, 0px)) scale(var(--z, 1)); transform-origin: center; font: 12px/1.35 var(--font-ui); color: var(--ink); overflow: hidden; background: var(--desk); background-image: radial-gradient(var(--desk-dot) 1px, transparent 1px); background-size: 8px 8px; border: 1px solid var(--dk); }
-.capbar { flex: none; background: var(--tip); border: 1px solid var(--dk); box-shadow: 2px 2px 0 rgba(0,0,0,.5); padding: 12px 14px; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: start; min-height: 96px; }
-.capbar .chip { margin-top: 2px; }
+.capbar { flex: none; background: var(--tip); border: 1px solid var(--dk); box-shadow: 2px 2px 0 rgba(0,0,0,.5); padding: 12px 14px; display: grid; grid-template-columns: 44px 1fr; gap: 6px 14px; align-items: start; min-height: 96px; }
+.capbar .chip { margin-bottom: 6px; justify-self: start; }
+.mascot { width: 44px; height: 44px; display: grid; place-items: center; background: var(--paper); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); box-shadow: inset 1px 1px var(--dk); }
+.mascot svg { width: 30px; height: 30px; display: block; }
+.mascot.bob svg { animation: mbob .4s ease; }
+@keyframes mbob { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-4px) rotate(-8deg); } 70% { transform: translateY(1px) rotate(4deg); } }
 .capbar .ctext { min-width: 0; transition: opacity .18s ease; }
 .capbar .ctext.fade { opacity: 0; }
 .capbar h3 { font: 700 17px/1.25 var(--font-ui); margin-bottom: 4px; }
 .capbar p { font-size: 15px; line-height: 1.4; max-width: 90ch; }
 @media (max-width: 640px) {
-  .capbar { grid-template-columns: 1fr; gap: 6px; padding: 10px 12px; min-height: 120px; }
+  .capbar { grid-template-columns: 36px 1fr; gap: 6px 10px; padding: 10px 12px; min-height: 120px; }
+  .mascot { width: 36px; height: 36px; } .mascot svg { width: 24px; height: 24px; }
   .capbar h3 { font-size: 15px; } .capbar p { font-size: 13px; }
-  .prog .labels { font-size: 9px; }
+  .prog .labels { font-size: 9px; letter-spacing: .04em; }
+  .autopill { top: 40px; font-size: 9px; }
 }
 
 /* ---------- Desktop ---------- */
@@ -120,7 +135,7 @@ p { margin: 0; }
 .dicon .g { width: 34px; height: 34px; position: relative; }
 .dicon.file .g { background: var(--paper); border: 1px solid var(--dk); display: grid; place-items: center; }
 .dicon.file .g .fmark { width: 12px; height: 18px; }
-.dicon.folder .g { background: #F5C45E; border: 1px solid var(--dk); clip-path: polygon(0 20%, 40% 20%, 48% 8%, 100% 8%, 100% 100%, 0 100%); display: grid; place-items: center; color: var(--dk); font: 700 14px/1 var(--font-px); padding-top: 6px; }
+.dicon.folder .g { background: #F5C45E; border: 1px solid var(--dk); clip-path: polygon(0 20%, 40% 20%, 48% 8%, 100% 8%, 100% 100%, 0 100%); display: grid; place-items: center; color: var(--dk); font: 700 16px/1 var(--font-px); padding-top: 6px; }
 .dicon.anchor .g svg { display: block; }
 .dicon.txt .g { background: var(--paper); border: 1px solid var(--dk); background-image: repeating-linear-gradient(0deg, transparent 0 5px, var(--lo) 5px 6px); background-size: 20px 100%; background-position: 6px 8px; background-repeat: no-repeat; }
 .wall { position: absolute; right: 36px; bottom: 60px; width: 120px; height: 180px; gap: 4px; opacity: .14; }
@@ -137,16 +152,26 @@ p { margin: 0; }
 /* ---------- Figma window ---------- */
 .fw { position: absolute; left: 100px; top: 16px; width: 880px; height: 560px; display: flex; flex-direction: column; transition: transform .55s cubic-bezier(.4,0,.2,1), opacity .4s ease; transform-origin: 30% 110%; }
 .closed .fw { transform: translate(-200px, 520px) scale(.08); opacity: 0; pointer-events: none; }
+.closed .task { opacity: 0; transform: translateY(40px); transition: .3s; }
+.wall { transition: opacity .4s; }
+.closed .wall { opacity: .75; animation: bx 7s linear infinite alternate, by 5s linear infinite alternate; }
+@keyframes bx { from { transform: translateX(0); } to { transform: translateX(-800px); } }
+@keyframes by { from { transform: translateY(0); } to { transform: translateY(-380px); } }
+.stamp { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%); font: 700 48px/1 var(--font-px); color: var(--hi); text-shadow: 3px 3px 0 var(--dk); letter-spacing: .04em; opacity: 0; transition: opacity .3s; white-space: nowrap; }
+.closed .stamp { opacity: 1; }
+.reentry .mate, .reentry .pin { opacity: 0; }
 .fw .toolbar { display: flex; gap: 2px; height: 26px; align-items: center; padding: 0 6px; border-bottom: 1px solid var(--lo); box-shadow: 0 1px 0 var(--hi); }
-.tool { width: 24px; height: 20px; display: grid; place-items: center; font: 700 11px/1 var(--font-px); color: var(--ink-2); }
-.tool.on { background: var(--fig-ui); color: var(--hi); border: 1px solid var(--dk); }
+.tool { width: 24px; height: 22px; display: grid; place-items: center; font: 700 8px/1 var(--font-px); color: var(--ink-2); border: 2px solid; border-color: var(--hi) var(--dk) var(--dk) var(--hi); box-shadow: inset -1px -1px var(--lo), inset 1px 1px var(--lt); }
+.tool.on { border-color: var(--dk) var(--hi) var(--hi) var(--dk); box-shadow: inset 1px 1px var(--lo); background: repeating-conic-gradient(var(--hi) 0 25%, var(--face) 0 50%) 0 0/2px 2px; color: var(--fig-ui-dark); }
 .fw .main { flex: 1; display: grid; grid-template-columns: 172px 1fr 236px; min-height: 0; }
 .side { background: var(--face); border-right: 1px solid var(--lo); box-shadow: 1px 0 0 var(--hi); overflow: hidden; }
 .side h4 { font: 700 11px/1 var(--font-ui); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); padding: 8px 10px 4px; }
 .side ul { list-style: none; margin: 0; padding: 0 6px; }
 .side li { padding: 3px 6px; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 12px; transition: color .3s; }
 .side li.cur { background: var(--fig-ui); color: var(--hi); }
-.side li .lock { margin-left: auto; font-size: 10px; opacity: 0; transition: opacity .3s; }
+.side li .lock { margin-left: auto; width: 9px; height: 6px; margin-top: 3px; border: 2px solid var(--ink-3); border-top: none; position: relative; opacity: 0; transition: opacity .3s; flex: none; }
+.side li .lock::before { content: ""; position: absolute; left: 0; top: -7px; width: 5px; height: 5px; border: 2px solid var(--ink-3); border-bottom: none; border-radius: 4px 4px 0 0; }
+.ptile { display: inline-grid; place-items: center; width: 12px; height: 12px; background: #F5C45E; border: 1px solid var(--dk); font: 700 8px/1 var(--font-px); color: var(--dk); font-style: normal; flex: none; }
 .tunnel .side li.dim { color: var(--lo); }
 .tunnel .side li.dim .lock { opacity: 1; }
 .side li.park { height: 0; padding-block: 0; overflow: hidden; transition: height .3s ease, padding .3s ease; color: var(--ink); font-weight: 700; }
@@ -213,7 +238,7 @@ p { margin: 0; }
 .tunnel .ap .on-tunnel { display: block; }
 .ap .intent-line { font: 700 13px/1.3 var(--font-ui); margin-bottom: 6px; }
 .ap .clock { display: flex; align-items: baseline; gap: 6px; font-variant-numeric: tabular-nums; }
-.ap .clock b { font: 700 20px/1 var(--font-px); color: var(--fig-ui-dark); white-space: nowrap; }
+.ap .clock b { font: 700 16px/1 var(--font-px); color: var(--ink); white-space: nowrap; }
 .ap .clock span { color: var(--ink-3); font-size: 11px; }
 .ap .muted { font-size: 11px; color: var(--ink-2); display: grid; gap: 2px; margin-top: 6px; }
 .ap .muted i { font-style: normal; }
@@ -224,8 +249,8 @@ p { margin: 0; }
 .dlg { position: absolute; width: 360px; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(.96); opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; z-index: 6; }
 .dlg.show { opacity: 1; transform: translate(-50%,-50%) scale(1); }
 .dlg .body { padding: 12px 12px 12px; display: grid; grid-template-columns: 36px 1fr; gap: 10px 12px; font-size: 12px; line-height: 1.4; }
-.dlg .ico { width: 36px; height: 36px; display: grid; place-items: center; font: 700 20px/1 var(--font-px); color: var(--hi); border: 1px solid var(--dk); }
-.dlg .ico.warn { background: var(--fig-orange); } .dlg .ico.info { background: var(--fig-green); } .dlg .ico.about { background: var(--fig-purple); }
+.dlg .ico { width: 36px; height: 36px; display: grid; place-items: center; font: 700 16px/1 var(--font-px); color: var(--hi); border: 1px solid var(--dk); }
+.dlg .ico.warn { background: var(--fig-orange); } .dlg .ico.info { background: var(--fig-green); } .dlg .ico.about { background: var(--fig-green); }
 .dlg .txt { display: grid; gap: 6px; min-width: 0; }
 .dlg .txt ul { margin: 0; padding-left: 16px; }
 .dlg .btns { grid-column: 1 / -1; display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
@@ -247,12 +272,13 @@ p { margin: 0; }
 
 /* ---------- Sections after the stage ---------- */
 .sec { padding-block: 36px; display: grid; gap: 18px; }
-.sec > h2 { font: 700 clamp(18px, 3vw, 24px)/1.2 var(--font-px); color: var(--hi); letter-spacing: .02em; text-shadow: 2px 2px 0 var(--dk); }
+.sec > h2 { font: 700 16px/1.2 var(--font-px); color: var(--hi); letter-spacing: .02em; text-shadow: 2px 2px 0 var(--dk); }
+@media (min-width: 640px) { .sec > h2 { font-size: 24px; } }
 .sec > .intro { color: var(--lt); max-width: 70ch; font-size: 16px; }
 .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; align-items: stretch; }
 .feat .body { padding: 14px 14px 16px; display: grid; gap: 12px; font-size: 14px; line-height: 1.45; }
 .feat dl { margin: 0; display: grid; gap: 10px; }
-.feat dt { font: 700 11px/1 var(--font-px); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+.feat dt { font: 700 11px/1 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
 .feat dd { margin: 0; }
 .feat .demo { height: 54px; border: 1px solid var(--lo); background: var(--canvas); position: relative; overflow: hidden; }
 .feat .demo .m { position: absolute; background: var(--paper); border: 1px solid #D0D0D0; }
@@ -263,23 +289,26 @@ p { margin: 0; }
 .try ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
 .try .links { display: flex; gap: 10px; flex-wrap: wrap; }
 .try .links a { text-decoration: none; display: inline-block; }
-.foot { padding-block: 28px 40px; color: var(--lo); font-size: 12px; text-align: center; max-width: 70ch; margin-inline: auto; }
+.pagefoot { padding-block: 28px 40px; color: #A0A0A0; font-size: 12px; text-align: center; max-width: 70ch; margin-inline: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   .arrow { animation: none; }
   .caret::after { animation: none; }
-  .fw, .cv, .dlg, .fr .bx, .ghost, .pin, .mate, .side li.park { transition-duration: .01s; }
+  .fw, .cv, .dlg, .fr .bx, .ghost, .pin, .mate, .side li.park, .wall, .stamp { transition-duration: .01s; }
+  .closed .wall { animation: none; }
+  .mascot.bob svg { animation: none; }
 }
 </style>
 
 <!-- ============ HERO ============ -->
 <header class="hero">
   <div class="win" role="presentation">
-    <div class="tb"><span class="fmark ic"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="t">Anchor Setup</span><span class="wb"><span class="btn">_</span><span class="btn">□</span><span class="btn">×</span></span></div>
+    <div class="tb"><span class="fmark ic"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="t">Anchor Setup</span><span class="wb" aria-hidden="true"><span class="btn">_</span><span class="btn">□</span><span class="btn">×</span></span></div>
     <div class="stripe" aria-hidden="true"></div>
     <div class="body">
+      <div class="wizpanel" aria-hidden="true"><span class="fmark"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+      <div class="wizmain">
       <div class="logo">
-        <span class="fmark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
         <h1 aria-label="Anchor"><span>A</span><span>N</span><span>C</span><span>H</span><span>O</span><span>R</span></h1>
       </div>
       <p class="lede">An attention and working-memory layer for Figma's infinite canvas. Built for designers with ADHD. Better for everyone.</p>
@@ -287,9 +316,10 @@ p { margin: 0; }
       <div class="cta">
         <button class="btn primary" id="go">Watch the demo<span class="arrow" aria-hidden="true"></span></button>
         <button class="btn" id="auto">Auto-play</button>
-        <span class="hint">Just scroll down to watch the demo. Or press Auto-play and it plays on its own.</span>
+        <span class="hint">Just scroll down to watch the demo. Or press Auto-play and it plays on its own. Scroll or press any key to take over.</span>
       </div>
       <p class="sub" style="font-size:12px">A product concept by Qasim Murad.</p>
+      </div>
     </div>
   </div>
 </header>
@@ -301,6 +331,7 @@ p { margin: 0; }
       <div class="labels"><span data-ch="0">Friday</span><span data-ch="1">1 · Tunnel</span><span data-ch="2">2 · Park it</span><span data-ch="3">3 · Where was I?</span></div>
       <div class="bar"><div class="fill" id="fill"></div></div>
     </div>
+    <div class="autopill" id="autopill" hidden>Auto-playing. Scroll or press any key to take over.</div>
 
     <div class="mockbox" id="mockbox">
       <div class="desk" id="desk" aria-hidden="true">
@@ -325,18 +356,18 @@ p { margin: 0; }
                 <li class="cur" id="pg-checkout">Checkout</li>
                 <li>Onboarding</li>
                 <li>Explorations</li>
-                <li class="park" id="pg-park">🅿 Parking lot<span class="badge">1</span></li>
+                <li class="park" id="pg-park"><i class="ptile">P</i>Parking lot<span class="badge">1</span></li>
               </ul>
               <h4>Layers</h4>
               <ul>
-                <li class="dim">Nav bar<span class="lock">🔒</span></li>
+                <li class="dim">Nav bar<span class="lock"></span></li>
                 <li class="ly-sel">Cart / empty</li>
                 <li class="ly-sel cd-li">Card declined</li>
-                <li class="dim">Cart / items<span class="lock">🔒</span></li>
-                <li class="dim">Address<span class="lock">🔒</span></li>
-                <li class="dim">Review order<span class="lock">🔒</span></li>
-                <li class="dim">Success<span class="lock">🔒</span></li>
-                <li class="dim">Icon set v2<span class="lock">🔒</span></li>
+                <li class="dim">Cart / items<span class="lock"></span></li>
+                <li class="dim">Address<span class="lock"></span></li>
+                <li class="dim">Review order<span class="lock"></span></li>
+                <li class="dim">Success<span class="lock"></span></li>
+                <li class="dim">Icon set v2<span class="lock"></span></li>
               </ul>
             </div>
 
@@ -365,13 +396,13 @@ p { margin: 0; }
 
               <!-- Drift dialog -->
               <div class="win dlg drift" id="dlg-drift">
-                <div class="tb o"><span class="t">Anchor - Quick check</span><span class="wb"><span class="btn">×</span></span></div>
+                <div class="tb o"><span class="t">Anchor - Check-in</span><span class="wb"><span class="btn">×</span></span></div>
                 <div class="body">
                   <div class="ico warn">!</div>
                   <div class="txt">
-                    <div>You've spent <b>17 min</b> on things outside <q>Finish the checkout error states</q>:</div>
+                    <div>You've spent <b>15 min</b> on things outside <q>Finish the checkout error states</q>:</div>
                     <ul><li>Icon exploration</li></ul>
-                    <div style="color:var(--ink-3)">Nothing is deleted either way. Anchor asks once.</div>
+                    <div style="color:var(--ink-3)">Whichever you pick, nothing is deleted. Anchor won't ask again this session.</div>
                   </div>
                   <div class="btns"><span class="btn primary" id="b-park">Park it</span><span class="btn">Make it the intent</span><span class="btn">Keep going</span></div>
                 </div>
@@ -383,10 +414,10 @@ p { margin: 0; }
                 <div class="body">
                   <div class="ico info">i</div>
                   <div class="txt">
-                    <div>You were here <b>3 days ago</b> for <b>1 h 40 min</b>, on page <b>Checkout</b>.</div>
+                    <div>You were here <b>on Friday</b> for <b>1 h 40 min</b>, on page <b>Checkout</b>.</div>
                     <div>You set out to: <q>Finish the checkout error states</q>.</div>
-                    <div>You edited 6 frames, mostly <b>Cart / empty</b> and <b>Card declined</b>. You parked 1 tangent.</div>
-                    <div><b>Your note:</b> <q>Card declined is done. Address errors still need the red from Cart / empty.</q></div>
+                    <div>You edited <b>Cart / empty</b> and <b>Card declined</b>. You parked 1 tangent: <b>Icon exploration</b>.</div>
+                    <div><b>Your note:</b> <q>Cart / empty is done. Card declined still needs its final error copy.</q></div>
                   </div>
                   <div class="btns"><span class="btn primary" id="b-there">Take me there</span><span class="btn">Got it</span></div>
                 </div>
@@ -394,12 +425,12 @@ p { margin: 0; }
 
               <!-- About dialog -->
               <div class="win dlg about" id="dlg-about">
-                <div class="tb p"><span class="t">About Anchor</span><span class="wb"><span class="btn">×</span></span></div>
+                <div class="tb g"><span class="t">About Anchor</span><span class="wb"><span class="btn">×</span></span></div>
                 <div class="body">
                   <div class="ico about">A</div>
                   <div class="txt">
                     <div style="font:700 14px/1.3 var(--font-ui)">Built for ADHD. Better for everyone.</div>
-                    <div>Working memory, attention and intent are accessibility needs. Anchor makes the file carry them, with a scope that quiets the canvas, a nudge that saves tangents, and a card that restores context.</div>
+                    <div>Attention and working memory are accessibility needs. Anchor makes the file carry them, with a scope that quiets the canvas, a check-in that saves tangents, and a card that restores context.</div>
                     <div style="color:var(--ink-3)">Scroll on for exactly what each feature does, and why Anchor counts as accessibility.</div>
                   </div>
                   <div class="btns"><span class="btn primary">OK</span></div>
@@ -414,7 +445,7 @@ p { margin: 0; }
                 <div class="group off-tunnel"><span class="lg">Tunnel</span>
                   <div style="margin-bottom:4px">What are you here to do?</div>
                   <div class="sunk field" id="intent"><span id="intent-text"></span></div>
-                  <div class="hint" style="margin-top:4px" id="sel-hint">Select the frames to focus on, then enter.</div>
+                  <div class="hint" style="margin-top:4px" id="sel-hint">Select the frames to focus on, then press Enter Tunnel.</div>
                   <span class="btn primary" id="b-enter">Enter Tunnel</span>
                 </div>
                 <div class="group on-tunnel"><span class="lg">In Tunnel</span>
@@ -427,7 +458,7 @@ p { margin: 0; }
                   <div class="sunk field" id="note"><span id="note-text"></span></div>
                   <div class="hint" style="margin-top:4px">Shows on the Where was I? card next time.</div>
                 </div>
-                <div class="hint"><span class="led"></span><span id="ap-status">Idle · drift nudge after 15 min</span></div>
+                <div class="hint"><span class="led"></span><span id="ap-status">Idle · check-in after 15 min outside the scope</span></div>
               </div>
             </div>
           </div>
@@ -435,6 +466,7 @@ p { margin: 0; }
         </div>
 
         <div class="ghost" id="ghost"></div>
+        <div class="stamp" id="stamp"></div>
 
         <!-- taskbar -->
         <div class="taskbar">
@@ -452,9 +484,9 @@ p { margin: 0; }
       </div>
     </div>
 
-    <div class="capbar" aria-live="polite">
-      <span class="chip" id="chip">Friday</span>
-      <div class="ctext" id="ctext"><h3 id="chead">Friday, 2:30 pm. A normal Figma file.</h3><p id="cbody">Checkout flow, 400 frames, two teammates and three open comments. You're here to finish the error states. Keep scrolling: the cursor does the rest.</p></div>
+    <div class="capbar" aria-live="polite" aria-atomic="true">
+      <div class="mascot" id="mascot" aria-hidden="true"><svg viewBox="0 0 34 34"><circle cx="17" cy="6" r="3.5" fill="none" stroke="#0D99FF" stroke-width="3"/><path d="M17 9.5 V30 M8 15 H26 M5 21 C7 29 27 29 29 21" fill="none" stroke="#0D99FF" stroke-width="3" stroke-linecap="square"/></svg></div>
+      <div class="ctext" id="ctext"><span class="chip" id="chip">Friday</span><h3 id="chead">Friday, 2:30 pm. A normal Figma file.</h3><p id="cbody">A checkout flow, two teammates and three open comments. You're here to finish the error states. Keep scrolling and the cursor does the rest.</p></div>
     </div>
   </div>
 </div>
@@ -468,7 +500,7 @@ p { margin: 0; }
       <article class="win feat">
         <div class="tb"><span class="t">1 · Tunnel</span></div><div class="stripe" aria-hidden="true"></div>
         <div class="body">
-          <div class="demo" aria-hidden="true"><div class="m" style="left:12px;top:10px;width:60px;height:34px;box-shadow:0 0 0 2px var(--fig-ui)"></div><div class="m" style="left:84px;top:10px;width:60px;height:34px;opacity:.12"></div><div class="m" style="left:156px;top:10px;width:60px;height:34px;opacity:.12"></div><div class="m" style="left:228px;top:10px;width:60px;height:34px;opacity:.12"></div></div>
+          <div class="demo" aria-hidden="true"><div class="m" style="left:4%;top:10px;width:20%;height:34px;box-shadow:0 0 0 2px var(--fig-ui)"></div><div class="m" style="left:28%;top:10px;width:20%;height:34px;opacity:.12"></div><div class="m" style="left:52%;top:10px;width:20%;height:34px;opacity:.12"></div><div class="m" style="left:76%;top:10px;width:20%;height:34px;opacity:.12"></div></div>
           <dl>
             <div><dt>What it does</dt><dd>You select the frames you mean to work on and type what you're here to do. Every other frame on the page drops to 12% opacity and locks. Teammates' cursors, comment pins and notifications are muted for the session. Your intent line and a quiet elapsed-time count stay in view.</dd></div>
             <div><dt>What it never does</dt><dd>Delete anything, hide anything from teammates, or change the file for anyone else. Exit Tunnel restores every frame exactly as it was.</dd></div>
@@ -479,10 +511,10 @@ p { margin: 0; }
       <article class="win feat">
         <div class="tb o"><span class="t">2 · Park it</span></div><div class="stripe" aria-hidden="true"></div>
         <div class="body">
-          <div class="demo" aria-hidden="true"><div class="m" style="left:12px;top:10px;width:60px;height:34px;box-shadow:0 0 0 2px var(--fig-ui)"></div><div class="m" style="left:120px;top:14px;width:50px;height:26px;border:2px solid var(--fig-orange)"></div><div style="position:absolute;left:178px;top:22px;width:80px;height:0;border-top:2px dashed var(--fig-orange)"></div><div class="m" style="left:262px;top:18px;width:28px;height:18px;background:#F5C45E;border-color:var(--dk)"></div></div>
+          <div class="demo" aria-hidden="true"><div class="m" style="left:4%;top:10px;width:20%;height:34px;box-shadow:0 0 0 2px var(--fig-ui)"></div><div class="m" style="left:38%;top:14px;width:17%;height:26px;border:2px solid var(--fig-orange)"></div><div style="position:absolute;left:57%;top:26px;width:26%;height:0;border-top:2px dashed var(--fig-orange)"></div><div class="m" style="left:86%;top:18px;width:10%;height:18px;background:#F5C45E;border-color:var(--dk)"></div></div>
           <dl>
             <div><dt>What it does</dt><dd>While you're in a Tunnel, Anchor watches which frames you edit. After 15 minutes of editing outside the scope (you choose the threshold), it asks once, with three choices. Park it, Make it the intent, or Keep going. Park it moves the tangent to a Parking lot page with a dated note and a link back, then returns you to the scope.</dd></div>
-            <div><dt>What it never does</dt><dd>Ask twice in one session, delete the tangent, or use guilt copy. If you dismiss it twice, the threshold doubles.</dd></div>
+            <div><dt>What it never does</dt><dd>Ask twice in one session, delete the tangent, or use guilt copy. If you choose Keep going in two sessions running, the threshold doubles.</dd></div>
             <div><dt>Why</dt><dd>Hyperfocus tangents are often where the best ideas come from. The goal is to make them cost minutes instead of an afternoon.</dd></div>
           </dl>
         </div>
@@ -490,7 +522,7 @@ p { margin: 0; }
       <article class="win feat">
         <div class="tb g"><span class="t">3 · Where was I?</span></div><div class="stripe" aria-hidden="true"></div>
         <div class="body">
-          <div class="demo" aria-hidden="true"><div class="m" style="left:12px;top:8px;width:200px;height:38px;border-color:var(--fig-green);border-width:2px"></div><div style="position:absolute;left:22px;top:16px;width:120px;height:4px;background:#D9D9D9"></div><div style="position:absolute;left:22px;top:26px;width:160px;height:4px;background:#D9D9D9"></div><div style="position:absolute;left:150px;top:34px;width:52px;height:8px;background:var(--fig-green)"></div><div class="m" style="left:232px;top:10px;width:56px;height:34px;box-shadow:0 0 0 2px var(--fig-ui)"></div></div>
+          <div class="demo" aria-hidden="true"><div class="m" style="left:4%;top:8px;width:66%;height:38px;border-color:var(--fig-green);border-width:2px"></div><div style="position:absolute;left:8%;top:16px;width:40%;height:4px;background:#D9D9D9"></div><div style="position:absolute;left:8%;top:26px;width:52%;height:4px;background:#D9D9D9"></div><div style="position:absolute;left:50%;top:34px;width:17%;height:8px;background:var(--fig-green)"></div><div class="m" style="left:77%;top:10px;width:19%;height:34px;box-shadow:0 0 0 2px var(--fig-ui)"></div></div>
           <dl>
             <div><dt>What it does</dt><dd>Each session, Anchor logs the frames you touch, your last selection, your intent and the note you leave, on your own machine. When you reopen the file it shows one card with when you were here, for how long, what you set out to do, what you touched, what you parked, and your note. <em>Take me there</em> selects and zooms to where you stopped.</dd></div>
             <div><dt>What it never does</dt><dd>Send data anywhere, or show it to teammates or admins. The log is per user, per file, and can be cleared.</dd></div>
@@ -506,13 +538,13 @@ p { margin: 0; }
     <div class="win why">
       <div class="tb p"><span class="t">Anchor - Why</span></div><div class="stripe" aria-hidden="true"></div>
       <div class="body">
-        <div class="dlg-ico ico about" style="width:36px;height:36px;display:grid;place-items:center;font:700 20px/1 var(--font-px);color:var(--hi);background:var(--fig-purple);border:1px solid var(--dk)">i</div>
+        <div class="dlg-ico ico about" style="width:36px;height:36px;display:grid;place-items:center;font:700 16px/1 var(--font-px);color:var(--hi);background:var(--fig-purple);border:1px solid var(--dk)">i</div>
         <ul>
           <li><b>It's common.</b> The CDC estimates 6% of US adults had a current ADHD diagnosis in 2023. Over half were diagnosed as adults, so many working designers are learning this on the job, with no accommodations.</li>
           <li><b>It's a disability in law.</b> Under the ADA as amended, <em>concentrating</em> and <em>thinking</em> are major life activities. A substantial limit on them is a disability, judged without regard to medication. The UK Equality Act 2010 applies a similar test.</li>
           <li><b>The standards already name these needs.</b> The W3C's cognitive accessibility guidance has objectives called <em>Help users focus</em> and <em>Ensure processes do not rely on memory</em>, and a pattern called <em>Limit interruptions</em>. WCAG 2.2 has success criteria for interruptions, timing and redundant entry.</li>
-          <li><b>Figma's accessibility work so far is sensory and motor.</b> Screen reader support, keyboard navigation and enhanced contrast are real and good. Nothing yet addresses attention or memory. Anchor is the first concrete proposal for that layer.</li>
-          <li><b>Curb cut.</b> Built for the permanent case (ADHD), Anchor is just as useful in the temporary one (burnout, a newborn, a concussion) and the situational one (a 40-person file with twelve live cursors on a Friday afternoon).</li>
+          <li><b>Figma's published accessibility work is sensory and motor.</b> Screen reader support, keyboard navigation and enhanced contrast are real and good. As far as I can find, none of it addresses attention or working memory. Anchor is a proposal for that layer.</li>
+          <li><b>The curb-cut effect.</b> Built for the permanent case (ADHD), Anchor is useful in the temporary one (burnout, a newborn, a concussion) and the situational one (a 40-person file with 12 live cursors on a Friday afternoon).</li>
         </ul>
         <div class="foot">Sources and the full concept, including metrics, risks and a validation plan, are in the concept document linked below.</div>
       </div>
@@ -524,18 +556,18 @@ p { margin: 0; }
     <div class="win try">
       <div class="tb"><span class="t">Anchor - Install</span></div><div class="stripe" aria-hidden="true"></div>
       <div class="body">
-        <p>All three features exist as a working Figma plugin prototype. The Plugin API can't mute comments or read version history, so the prototype fakes neither; the re-entry summary is rule-based and swapping in an AI-written one is a single function.</p>
+        <p>All three features run as a Figma plugin prototype, with two limits. The Plugin API can't mute comments, so in the prototype Tunnel dims and locks frames but comment pins stay visible. It can't read version history either, so Where was I? is built from Anchor's own log of your edits. The re-entry summary is rule-based, and an AI-written one would be a drop-in replacement.</p>
         <ol>
           <li>Open the Figma desktop app and any file with a few top-level frames.</li>
           <li>Plugins → Development → Import plugin from manifest, and pick <code>manifest.json</code> from the plugin folder.</li>
-          <li>Run Anchor. Select a frame, type an intent, press Enter Tunnel. Set the drift nudge to 1 minute to see Park it. Close and reopen for Where was I?</li>
+          <li>Run Anchor. Select a frame, type an intent, press Enter Tunnel. Set the check-in threshold to 1 minute to see Park it. Close and reopen for Where was I?</li>
         </ol>
         <div class="links"><a class="btn primary" href="https://github.com/qasimmurad/qasimmurad.github.io/tree/main/anchor/plugin" target="_blank" rel="noopener">Code on GitHub</a><a class="btn" href="https://github.com/qasimmurad/qasimmurad.github.io/blob/main/anchor/CONCEPT.md" target="_blank" rel="noopener">Read the concept</a></div>
       </div>
     </div>
   </section>
 
-  <p class="foot">A product concept by Qasim Murad. The Figma name and colors belong to Figma, Inc. The Windows 95 look is a homage.</p>
+  <p class="pagefoot">A product concept by Qasim Murad. The Figma name and colors belong to Figma, Inc. The Windows 95 look is a homage.</p>
 </main>
 
 <script>
@@ -560,6 +592,7 @@ p { margin: 0; }
     if (!el) return [DW / 2, DH / 2];
     var r = el.getBoundingClientRect(), d = desk.getBoundingClientRect(), k = scale * zoom;
     if (r.width === 0 && r.height === 0) return null; // hidden right now: keep the previous target
+    if (desk.classList.contains('closed') && fw.contains(el)) return null; // inside the collapsing window: keep the previous target
     return [(r.left - d.left + r.width * (fx == null ? .5 : fx)) / k, (r.top - d.top + r.height * (fy == null ? .5 : fy)) / k];
   }
   function box(sel) {
@@ -577,101 +610,111 @@ p { margin: 0; }
       head: 'Friday, 2:30 pm. A normal Figma file.',
       body: 'Checkout flow, 400 frames, two teammates and three open comments. You’re here to finish the error states. Keep scrolling and the cursor does the rest.' },
     { at: 0.05, ch: 1, to: function () { return vpPt(8, 62); },
-      head: 'Tunnel starts with what you’re here to do.',
-      body: 'Select the frames you mean to work on. Anchor treats your selection as the scope. Here that’s the two error-state frames.' },
+      head: 'Tunnel starts with selecting what you’re working on.',
+      body: 'Select the frames you mean to work on. Anchor treats your selection as the scope. Here that’s the two frames that still need their error states.' },
     { at: 0.07, ch: 1, path: { from: function () { return vpPt(8, 62); }, to: function () { return vpPt(312, 204); } }, until: 0.11, marquee: true,
-      head: 'Tunnel starts with what you’re here to do.',
-      body: 'Select the frames you mean to work on. Anchor treats your selection as the scope. Here that’s the two error-state frames.' },
-    { at: 0.12, ch: 1, to: function () { return pt('#intent', .2, .5); }, click: true,
-      head: 'Say it in one line.',
+      head: 'Tunnel starts with selecting what you’re working on.',
+      body: 'Select the frames you mean to work on. Anchor treats your selection as the scope. Here that’s the two frames that still need their error states.' },
+    { at: 0.12, ch: 1, to: function () { return pt('#intent', .92, .82); }, click: true,
+      head: 'Then say why, in one line.',
       body: 'You type the intent once. Anchor keeps it in view the whole time, so the file holds the goal instead of your working memory.' },
-    { at: 0.19, ch: 1, to: function () { return pt('#b-enter'); }, click: true, pressed: '#b-enter',
+    { at: 0.19, ch: 1, to: function () { return lastStates.tunnel ? pt('.ap .clock', .98, .6) : pt('#b-enter'); }, click: true, pressed: '#b-enter',
       head: 'Everything else dims and locks.',
       body: 'Frames outside the scope drop to 12% and can’t be selected. Teammates’ cursors and comment pins are muted for this session. Nothing is deleted or hidden from anyone else.' },
-    { at: 0.26, ch: 1, to: function () { return pt('#tmin', .5, .5); },
-      head: 'A quiet clock, not an alarm.',
-      body: 'Anchor shows how long you’ve been in the Tunnel. No countdown, no red, no sound. Time awareness is one of the things ADHD takes away, so Anchor gives it back gently.' },
+    { at: 0.26, ch: 1, to: function () { return pt('.ap .clock', .98, .6); },
+      head: 'The clock counts up, quietly.',
+      body: 'Anchor shows how long you’ve been in the Tunnel. No countdown, no red, no sound. Losing track of time is a core ADHD trait, so Anchor shows elapsed time without adding pressure.' },
     { at: 0.33, ch: 2, to: function () { return vpPt(250, 362); },
       head: 'Twenty-seven minutes later, a tangent.',
-      body: 'You start redrawing the icon set. It’s good work. It’s also not the error states. Anchor notices you’ve been editing outside the scope.' },
+      body: 'You draw a fresh icon set next to the locked one. Locked frames can’t be edited, but nothing stops you creating a new frame. It’s good work. It’s also not the error states, and Anchor notices you’re editing outside the scope.' },
     { at: 0.35, ch: 2, path: { from: function () { return vpPt(250, 362); }, to: function () { return vpPt(450, 452); } }, until: 0.40, draw: true,
       head: 'Twenty-seven minutes later, a tangent.',
-      body: 'You start redrawing the icon set. It’s good work. It’s also not the error states. Anchor notices you’ve been editing outside the scope.' },
+      body: 'You draw a fresh icon set next to the locked one. Locked frames can’t be edited, but nothing stops you creating a new frame. It’s good work. It’s also not the error states, and Anchor notices you’re editing outside the scope.' },
     { at: 0.41, ch: 2, to: function () { return vpPt(340, 400); },
-      head: 'Seventeen minutes on the tangent.',
-      body: 'Anchor counts time spent editing outside the scope, not time away from the keyboard. Thinking is allowed.' },
-    { at: 0.45, ch: 2, to: function () { return pt('#dlg-drift .txt', .5, .3); },
+      head: 'The tangent clock is counting, quietly.',
+      body: 'It counts only minutes spent editing outside the scope, not time away from the keyboard. Thinking is allowed.' },
+    { at: 0.45, ch: 2, to: function () { return pt('#dlg-drift .ico', .5, 1.9); },
       head: 'Park it is one soft check-in.',
-      body: 'After 15 minutes off-intent (you set the threshold), Anchor asks once. Park the tangent, make it the new intent, or keep going. No guilt copy, and no second nag this session.' },
+      body: 'After 15 minutes outside the scope (you set the threshold), Anchor asks once. Park the tangent, make it the new intent, or keep going. No guilt copy, and no second ask this session.' },
     { at: 0.53, ch: 2, to: function () { return pt('#b-park'); }, click: true, pressed: '#b-park',
-      head: 'The tangent is saved, not lost.',
+      head: 'The tangent goes to the Parking lot.',
       body: 'The icon frame moves to a Parking lot page with a dated note and a link back. You’re returned to the scope. It costs one click.' },
-    { at: 0.60, ch: 2, to: function () { return pt('#note', .2, .5); }, click: true,
+    { at: 0.60, ch: 2, to: function () { return pt('#note', .92, .86); }, click: true,
       head: 'Before you leave, one line for future you.',
-      body: 'Anchor asks for the next step while it’s still in your head. Writing it down is the single most effective ADHD strategy there is.' },
-    { at: 0.67, ch: 0, to: function () { return pt('#fw .wb .btn:last-child'); }, click: true,
-      head: 'Friday, 5:47 pm. File closed.',
+      body: 'Anchor keeps a one-line note field in view, so you write the next step while it’s still in your head. Writing it down is one of the most consistently recommended ADHD strategies.' },
+    { at: 0.67, ch: 3, to: function () { return pt('#fw .wb .btn:last-child'); }, click: true,
+      head: 'Friday, 4:10 pm. File closed.',
       body: 'Over the weekend the file forgets nothing. You will. That’s the whole problem.' },
     { at: 0.72, ch: 3, to: function () { return pt('#ic-file', .5, .4); }, click: true, dbl: true,
       head: 'Monday, 9:12 am. You open the file.',
-      body: 'Normally this is the long stare at 400 frames trying to remember what was current. Here’s what Anchor shows instead.' },
-    { at: 0.78, ch: 3, to: function () { return pt('#dlg-re .txt', .5, .4); },
+      body: 'Normally this is the long stare at the canvas, trying to remember what was current. Here’s what Anchor shows instead.' },
+    { at: 0.78, ch: 3, to: function () { return pt('#dlg-re .ico', .5, 2.2); },
       head: 'Where was I? The file remembers.',
-      body: 'Anchor sums up your last session. When, how long, what you set out to do, what you touched, what you parked, and the note you left. Built from your own edit history, stored on your machine.' },
+      body: 'Anchor sums up your last session: when, how long, what you set out to do, what you touched, what you parked, and the note you left. It is built from your own edit history and stored on your machine.' },
     { at: 0.86, ch: 3, to: function () { return pt('#b-there'); }, click: true, pressed: '#b-there',
       head: 'One click and you’re back.',
-      body: 'Anchor selects the frame you were on and zooms to it. Re-entry takes ten seconds instead of twenty-five minutes.' },
-    { at: 0.93, ch: 3, to: function () { return pt('#dlg-about .btns .btn'); },
+      body: 'Anchor selects the frame you were on and zooms to it. Re-entry is one click instead of a long stare at the canvas.' },
+    { at: 0.93, ch: 3, to: function () { return pt('#dlg-about .ico', .5, 1.9); },
       head: 'Built for ADHD. Better for everyone.',
-      body: 'Working memory, attention and intent are accessibility needs. Anchor makes the file carry them. Scroll on for what each feature does and why Anchor counts as accessibility.' }
+      body: 'Attention and working memory are accessibility needs. Anchor makes the file carry them. Scroll on for what each feature does and why Anchor counts as accessibility.' }
   ];
   var CHIPS = ['Friday', '1 · Tunnel', '2 · Park it', '3 · Where was I?'];
 
   // State flags switched on at a progress value, and off again at `until` when given.
   var STATES = [
-    { cls: 'selected', at: 0.105, until: 0.675 },
-    { cls: 'tunnel', at: 0.195, until: 0.675 },
+    { cls: 'selected', at: 0.105, until: 0.745 },
+    { cls: 'tunnel', at: 0.215, until: 0.745 },
     { cls: 'tangent', at: 0.35 },
     { cls: 'drift', at: 0.45 },
-    { cls: 'parked', at: 0.535 },
-    { cls: 'closed', at: 0.675, until: 0.745 },
+    { cls: 'parked', at: 0.555 },
+    { cls: 'closed', at: 0.695, until: 0.745 },
     { cls: 'busy', at: 0.725, until: 0.765 },
     { cls: 'reentry', at: 0.78 },
-    { cls: 'there', at: 0.865 },
+    { cls: 'there', at: 0.885 },
     { cls: 'end', at: 0.93 }
   ];
   var TYPES = [
     { el: $('#intent-text'), text: 'Finish the checkout error states', from: 0.125, to: 0.18 },
-    { el: $('#note-text'), text: 'Card declined is done. Address errors still need the red from Cart / empty.', from: 0.605, to: 0.66 }
+    { el: $('#note-text'), text: 'Cart / empty is done. Card declined still needs its final error copy.', from: 0.605, to: 0.66 }
   ];
 
   function tunnelMinutes(p) {
-    if (p < 0.195) return 0;
-    if (p < 0.33) return Math.round(lerp(0, 27, (p - 0.195) / (0.33 - 0.195)));
-    if (p < 0.45) return Math.round(lerp(27, 44, (p - 0.33) / (0.45 - 0.33)));
-    if (p < 0.60) return Math.round(lerp(44, 52, (p - 0.45) / (0.60 - 0.45)));
+    if (p < 0.215) return 0;
+    if (p < 0.33) return Math.round(lerp(0, 27, (p - 0.215) / (0.33 - 0.215)));
+    if (p < 0.45) return Math.round(lerp(27, 42, (p - 0.33) / (0.45 - 0.33)));
+    if (p < 0.555) return 42; // the check-in is up; the clock waits with you
+    if (p < 0.60) return Math.round(lerp(42, 52, (p - 0.555) / (0.60 - 0.555)));
     return Math.round(lerp(52, 100, clamp((p - 0.60) / (0.67 - 0.60), 0, 1)));
   }
+  // The taskbar clock is derived from the tunnel counter, so the two can never disagree.
   function clockText(p) {
-    if (p < 0.195) return 'Fri 2:30 PM';
-    if (p < 0.33) return 'Fri 2:' + (30 + Math.round(27 * (p - 0.195) / (0.33 - 0.195))).toString().padStart(2, '0') + ' PM';
-    if (p < 0.45) return 'Fri 3:' + Math.round(14 * (p - 0.33) / (0.45 - 0.33)).toString().padStart(2, '0') + ' PM';
-    if (p < 0.60) return 'Fri 3:22 PM';
-    if (p < 0.675) return 'Fri 5:47 PM';
-    if (p < 0.695) return 'Fri 11:59 PM';
-    if (p < 0.715) return 'Sat';
-    if (p < 0.735) return 'Sun';
+    if (p < 0.695) { var m = 30 + tunnelMinutes(p); return 'Fri ' + (2 + Math.floor(m / 60)) + ':' + String(m % 60).padStart(2, '0') + ' PM'; }
+    if (p < 0.705) return 'Fri 11:59 PM';
+    if (p < 0.713) return 'Sat';
+    if (p < 0.72) return 'Sun';
     return 'Mon 9:12 AM';
   }
 
   // ---------- Layout ----------
   var visW = DW, visH = DH; // visible design-space extent of the camera window
+  var fw = $('#fw'), capbar = $('.capbar'), mascot = $('#mascot'), autopill = $('#autopill'), stamp = $('#stamp');
+  function reserveCaption() {
+    // Size the caption bar for its longest beat once, so the stage never grows mid-demo.
+    var longest = BEATS.reduce(function (a, b) { return (b.head + b.body).length > (a.head + a.body).length ? b : a; });
+    var h0 = chead.textContent, b0 = cbody.textContent;
+    chead.textContent = longest.head; cbody.textContent = longest.body;
+    capbar.style.minHeight = '0px';
+    var h = capbar.offsetHeight;
+    capbar.style.minHeight = h + 'px';
+    chead.textContent = h0; cbody.textContent = b0;
+  }
   function fit() {
+    reserveCaption();
     mockbox.style.flex = ''; mockbox.style.height = '';
     var r = mockbox.getBoundingClientRect();
     var sW = r.width / DW, sH = r.height / DH;
     scale = Math.max(0.2, Math.min(sW, sH));
-    zoom = clamp(0.72 / scale, 1, 2);
+    zoom = clamp(0.9 / scale, 1, 2.6);
     if (zoom > 1) {
       // Small screen: a zoomed camera window, as tall as the space allows.
       mockbox.style.flex = '0 0 auto';
@@ -713,6 +756,8 @@ p { margin: 0; }
     ctext.classList.add('fade');
     setTimeout(function () { chead.textContent = b.head; cbody.textContent = b.body; chip.textContent = CHIPS[b.ch]; ctext.classList.remove('fade'); }, reduced ? 0 : 160);
     labels.forEach(function (l) { l.classList.toggle('on', Number(l.getAttribute('data-ch')) === b.ch); });
+    stage.setAttribute('data-ch', String(b.ch));
+    mascot.classList.remove('bob'); void mascot.offsetWidth; mascot.classList.add('bob');
   }
   function flyGhost() {
     var b = box('#f-tan'), target = box('#pg-park');
@@ -726,12 +771,29 @@ p { margin: 0; }
     ghost.style.opacity = '0';
   }
 
+  var curBeat = null;
   function apply(p) {
     fill.style.width = (p * 100) + '%';
+
+    // states first, so beat targets are measured against the right layout
+    STATES.forEach(function (s) {
+      var on = p >= s.at && (s.until == null || p < s.until);
+      if (on !== !!lastStates[s.cls]) {
+        desk.classList.toggle(s.cls, on);
+        lastStates[s.cls] = on;
+        if (s.cls === 'parked') { if (on) flyGhost(); else { ghost.style.opacity = '0'; ghost.style.transform = 'none'; } }
+      }
+    });
 
     // beats
     var bi = 0; for (var i = 0; i < BEATS.length; i++) if (p >= BEATS[i].at) bi = i;
     var b = BEATS[bi];
+    curBeat = b;
+    if (!b.marquee) marq.classList.remove('on');
+    if (!b.draw) {
+      if (bi > 7) { tan.style.width = '200px'; tan.classList.add('on'); tanIcons.forEach(function (ic) { ic.classList.add('on'); }); }
+      else { tan.style.width = '0px'; tan.classList.remove('on'); tanIcons.forEach(function (ic) { ic.classList.remove('on'); }); }
+    }
     if (b.path) {
       var t = ease(clamp((p - b.at) / (b.until - b.at), 0, 1));
       var f = b.path.from(), to = b.path.to();
@@ -749,29 +811,17 @@ p { margin: 0; }
       }
     } else {
       var nt = b.to(); if (nt) tgt = nt;
-      if (bi > 2) marq.classList.remove('on');
-      if (bi > 7) { tan.style.width = '200px'; tan.classList.add('on'); tanIcons.forEach(function (ic) { ic.classList.add('on'); }); }
-      if (bi < 7) { tan.style.width = '0px'; tan.classList.remove('on'); tanIcons.forEach(function (ic) { ic.classList.remove('on'); }); }
     }
     if (bi !== lastBeat) {
       var forward = bi > lastBeat;
       setCaption(b);
       if (forward && lastBeat >= 0) {
-        if (b.click) { setTimeout(function () { pulse(tgt); if (b.dbl) setTimeout(function () { pulse(tgt); }, 140); }, reduced ? 0 : 260); }
-        if (b.pressed) setTimeout(function () { press(b.pressed); }, reduced ? 0 : 260);
+        if (b.click) { setTimeout(function () { pulse(tgt); if (b.dbl) setTimeout(function () { pulse(tgt); }, 140); }, reduced ? 0 : 380); }
+        if (b.pressed) setTimeout(function () { press(b.pressed); }, reduced ? 0 : 380);
       }
       lastBeat = bi;
     }
 
-    // states
-    STATES.forEach(function (s) {
-      var on = p >= s.at && (s.until == null || p < s.until);
-      if (on !== !!lastStates[s.cls]) {
-        desk.classList.toggle(s.cls, on);
-        lastStates[s.cls] = on;
-        if (s.cls === 'parked') { if (on) flyGhost(); else { ghost.style.opacity = '0'; ghost.style.transform = 'none'; } }
-      }
-    });
     scFrames.forEach(function (fr) { fr.classList.toggle('sel', !!lastStates.selected && !lastStates.there); });
     sideSel.forEach(function (li) { li.classList.toggle('sel-li', !!lastStates.selected); });
     $('#dlg-drift').classList.toggle('show', !!lastStates.drift && !lastStates.parked);
@@ -793,7 +843,8 @@ p { margin: 0; }
     var mt = String(m);
     if (tmin.textContent !== mt) tmin.textContent = mt;
     var ct = clockText(p); if (clock.textContent !== ct) clock.textContent = ct;
-    apStatus.textContent = lastStates.tunnel ? (lastStates.parked ? 'In Tunnel · 1 tangent parked' : 'In Tunnel · drift nudge after 15 min') : 'Idle · drift nudge after 15 min';
+    apStatus.textContent = lastStates.tunnel ? (lastStates.parked ? 'In Tunnel · 1 tangent parked' : 'In Tunnel · check-in after 15 min outside the scope') : 'Idle · check-in after 15 min outside the scope';
+    var st = ct.toUpperCase(); if (stamp.textContent !== st) stamp.textContent = st;
     stLeft.textContent = lastStates.tunnel ? 'Checkout · Tunnel on · 2 of 8 frames in focus' : 'Checkout · 8 frames · 2 teammates · 3 comments';
     stZoom.textContent = lastStates.there ? '170%' : '100%';
     camTarget = lastStates.closed ? [DW / 2, DH / 2] : null;
@@ -810,12 +861,15 @@ p { margin: 0; }
   function frame() {
     var p = progress();
     if (p !== lastP) { apply(p); lastP = p; }
+    if (curBeat && !curBeat.path) { var nt = curBeat.to(); if (nt) tgt = nt; }
     var k = reduced ? 1 : 0.14;
     cur[0] = lerp(cur[0], tgt[0], k); cur[1] = lerp(cur[1], tgt[1], k);
     cursor.style.setProperty('--cx', cur[0].toFixed(1) + 'px');
     cursor.style.setProperty('--cy', cur[1].toFixed(1) + 'px');
     if (zoom > 1) {
       var want = camTarget || tgt;
+      var openDlg = desk.querySelector('.dlg.show');
+      if (openDlg && !camTarget) { var dp = pt(openDlg, .5, .5); if (dp) want = dp; }
       var hw = Math.min(visW, DW) / 2, hh = Math.min(visH, DH) / 2;
       var wx = clamp(want[0], hw, DW - hw), wy = clamp(want[1], hh, DH - hh);
       var kc = reduced ? 1 : 0.07;
@@ -830,7 +884,7 @@ p { margin: 0; }
 
   // ---------- Controls ----------
   var auto = false, autoBtn = $('#auto');
-  function stopAuto() { if (!auto) return; auto = false; autoBtn.textContent = 'Auto-play'; }
+  function stopAuto() { if (!auto) return; auto = false; autoBtn.textContent = 'Auto-play'; autoBtn.setAttribute('aria-pressed', 'false'); autopill.hidden = true; }
   function autoStep() {
     if (!auto) return;
     var p = progress();
@@ -841,14 +895,34 @@ p { margin: 0; }
   }
   autoBtn.addEventListener('click', function () {
     if (auto) { stopAuto(); return; }
-    auto = true; autoBtn.textContent = 'Pause';
+    auto = true; autoBtn.textContent = 'Pause'; autoBtn.setAttribute('aria-pressed', 'true'); autopill.hidden = false;
     if (progress() === 0) window.scrollTo(0, track.offsetTop);
     requestAnimationFrame(autoStep);
   });
   $('#go').addEventListener('click', function () { track.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); });
-  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) { window.addEventListener(ev, stopAuto, { passive: true }); });
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) {
+    window.addEventListener(ev, function (e) { if (autoBtn.contains(e.target)) return; stopAuto(); }, { passive: true });
+  });
 
-  window.addEventListener('resize', function () { fit(); lastP = -1; });
+  // Keep the reader at the same beat when the track height changes with the viewport.
+  var lastW = window.innerWidth, lastH = window.innerHeight;
+  window.addEventListener('resize', function () {
+    var big = window.innerWidth !== lastW || Math.abs(window.innerHeight - lastH) > 150;
+    var p = progress();
+    fit();
+    if (big && p > 0 && p < 1) window.scrollTo(0, track.offsetTop + p * (track.offsetHeight - stage.offsetHeight));
+    lastW = window.innerWidth; lastH = window.innerHeight; lastP = -1;
+  });
+
+  // A readable transcript of the demo for screen readers, generated from the beats so it never drifts.
+  (function () {
+    var ol = document.createElement('ol'); ol.className = 'sr'; ol.setAttribute('aria-label', 'Demo transcript');
+    BEATS.forEach(function (b, i) {
+      if (i && b.head === BEATS[i - 1].head) return;
+      var li = document.createElement('li'); li.textContent = CHIPS[b.ch] + ': ' + b.head + ' ' + b.body; ol.appendChild(li);
+    });
+    track.insertAdjacentElement('afterend', ol);
+  })();
   fit();
   cur = BEATS[0].to().slice(); tgt = cur.slice(); cam = cur.slice();
   apply(progress());

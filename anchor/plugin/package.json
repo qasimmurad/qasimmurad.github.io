@@ -1,0 +1,14 @@
+{
+  "name": "anchor-figma",
+  "version": "0.1.0",
+  "description": "Anchor: an attention and working-memory layer for Figma's infinite canvas. Plugin prototype built for designers with ADHD.",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.100.0",
+    "typescript": "^5.4.0"
+  }
+}

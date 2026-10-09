@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  :root {
+    --bg: var(--figma-color-bg, #ffffff);
+    --bg-2: var(--figma-color-bg-secondary, #f5f5f5);
+    --bg-3: var(--figma-color-bg-tertiary, #ececec);
+    --text: var(--figma-color-text, #1e1e1e);
+    --text-2: var(--figma-color-text-secondary, #6b6b6b);
+    --text-3: var(--figma-color-text-tertiary, #9a9a9a);
+    --border: var(--figma-color-border, #e6e6e6);
+    --accent: var(--figma-color-bg-brand, #0d99ff);
+    --accent-text: var(--figma-color-text-onbrand, #ffffff);
+    --warm: #8a6d3b;
+    --warm-bg: color-mix(in srgb, #f5c45e 18%, var(--bg));
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font: 12px/1.45 Inter, -apple-system, system-ui, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    padding: 14px 14px 10px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  h1 { font-size: 13px; font-weight: 600; margin: 0; letter-spacing: .01em; display: flex; align-items: center; gap: 8px; }
+  h1 .pill {
+    font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 999px;
+    background: var(--bg-3); color: var(--text-2);
+  }
+  h1 .pill.on { background: color-mix(in srgb, var(--accent) 16%, var(--bg)); color: var(--accent); }
+  h2 { font-size: 11px; font-weight: 600; margin: 0 0 6px; color: var(--text-2); text-transform: uppercase; letter-spacing: .06em; }
+  .card { border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--bg); }
+  .card.soft { background: var(--bg-2); border-color: transparent; }
+  .card.warm { background: var(--warm-bg); border-color: transparent; }
+  p { margin: 0 0 8px; }
+  .muted { color: var(--text-2); }
+  .small { font-size: 11px; }
+  textarea, input, select {
+    width: 100%; font: inherit; color: var(--text); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 6px; padding: 8px; resize: none;
+  }
+  textarea:focus, input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .row > * { flex: 1; }
+  button {
+    font: inherit; font-weight: 500; border-radius: 6px; padding: 8px 10px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  }
+  button.primary { background: var(--accent); color: var(--accent-text); border-color: transparent; }
+  button.quiet { border-color: transparent; background: transparent; color: var(--text-2); }
+  button:disabled { opacity: .45; cursor: default; }
+  .intent-line { font-size: 15px; font-weight: 600; line-height: 1.3; margin: 2px 0 6px; }
+  .timer { font-variant-numeric: tabular-nums; color: var(--text-2); }
+  ul { margin: 6px 0 10px; padding-left: 16px; }
+  li { margin: 2px 0; }
+  .hidden { display: none !important; }
+  .footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--text-3); font-size: 11px; }
+  .footer select { width: auto; padding: 3px 6px; font-size: 11px; }
+  .toast { position: fixed; left: 14px; right: 14px; bottom: 44px; background: var(--text); color: var(--bg); padding: 8px 10px; border-radius: 6px; font-size: 11px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+  <h1>Anchor <span id="pill" class="pill">off</span></h1>
+
+  <!-- Where was I? -->
+  <section id="reentry" class="card soft hidden">
+    <h2>Where was I?</h2>
+    <p id="re-summary"></p>
+    <p id="re-note" class="hidden"></p>
+    <div class="row">
+      <button id="re-go" class="primary">Take me there</button>
+      <button id="re-dismiss" class="quiet">Got it</button>
+    </div>
+  </section>
+
+  <!-- Drift nudge -->
+  <section id="drift" class="card warm hidden">
+    <h2>Quick check</h2>
+    <p id="drift-text"></p>
+    <ul id="drift-list"></ul>
+    <div class="row">
+      <button id="drift-park" class="primary">Park it</button>
+      <button id="drift-adopt">Make it the intent</button>
+    </div>
+    <button id="drift-snooze" class="quiet" style="width:100%;margin-top:6px">Keep going, ask me later</button>
+  </section>
+
+  <!-- Tunnel: inactive -->
+  <section id="tunnel-off" class="card">
+    <h2>Tunnel</h2>
+    <textarea id="intent" rows="2" placeholder="What are you here to do? e.g. Finish the checkout error states"></textarea>
+    <p id="sel-hint" class="small muted" style="margin:6px 0 8px">Select the frame or flow to focus on, then enter.</p>
+    <button id="enter" class="primary" style="width:100%">Enter Tunnel</button>
+  </section>
+
+  <!-- Tunnel: active -->
+  <section id="tunnel-on" class="card hidden">
+    <h2>In Tunnel</h2>
+    <div id="intent-line" class="intent-line"></div>
+    <p class="small timer"><span id="elapsed">0 min</span> · <span id="scope-count"></span> in focus · everything else is dimmed and locked</p>
+    <button id="exit" style="width:100%">Exit Tunnel</button>
+  </section>
+
+  <!-- Note to future you -->
+  <section class="card">
+    <h2>Note for future you</h2>
+    <textarea id="note" rows="2" placeholder="Next step, the thing you'll forget, where the good version is…"></textarea>
+    <p class="small muted" style="margin:6px 0 0">Shows up on the Where was I? card next time you open this file.</p>
+  </section>
+
+  <div class="footer">
+    <span>Drift nudge after
+      <select id="threshold">
+        <option value="1">1 min (demo)</option>
+        <option value="5">5 min</option>
+        <option value="15">15 min</option>
+        <option value="30">30 min</option>
+      </select>
+    </span>
+    <button id="lot" class="quiet" style="padding:3px 6px">Open parking lot</button>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id)
+  const send = (msg) => parent.postMessage({ pluginMessage: msg }, '*')
+  const show = (el, on) => el.classList.toggle('hidden', !on)
+
+  let tunnel = null
+  let driftIds = []
+  let hasSelection = false
+
+  function toast(text) {
+    const t = $('toast'); t.textContent = text; t.classList.add('show')
+    clearTimeout(toast._h); toast._h = setTimeout(() => t.classList.remove('show'), 2600)
+  }
+
+  function renderTunnel() {
+    show($('tunnel-off'), !tunnel)
+    show($('tunnel-on'), !!tunnel)
+    $('pill').textContent = tunnel ? 'in tunnel' : 'off'
+    $('pill').classList.toggle('on', !!tunnel)
+    if (tunnel) {
+      $('intent-line').textContent = tunnel.intent || 'Focus'
+      $('scope-count').textContent = tunnel.scopeCount + (tunnel.scopeCount === 1 ? ' frame' : ' frames')
+      tick()
+    } else {
+      show($('drift'), false)
+    }
+    $('enter').disabled = !hasSelection
+    $('sel-hint').textContent = hasSelection
+      ? 'Your selection becomes the scope. Everything else dims.'
+      : 'Select the frame or flow to focus on, then enter.'
+  }
+
+  function tick() {
+    if (!tunnel) return
+    const m = Math.floor((Date.now() - tunnel.start) / 60000)
+    $('elapsed').textContent = m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + (m % 60) + ' min'
+  }
+  setInterval(tick, 15000)
+
+  function renderReentry(r) {
+    show($('reentry'), !!r)
+    if (!r) return
+    let s = 'You were here ' + r.when + ' for ' + r.duration
+    if (r.pageName) s += ', on "' + r.pageName + '"'
+    s += '.'
+    if (r.intent) s += ' You set out to: "' + r.intent + '".'
+    if (r.touchedCount) {
+      s += ' You edited ' + r.touchedCount + (r.touchedCount === 1 ? ' thing' : ' things')
+      if (r.topNames.length) s += ', mostly ' + r.topNames.map(n => '"' + n + '"').join(', ')
+      s += '.'
+    }
+    if (r.parked) s += ' You parked ' + r.parked + ' tangent' + (r.parked === 1 ? '' : 's') + '.'
+    $('re-summary').textContent = s
+    show($('re-note'), !!r.note)
+    if (r.note) {
+      $('re-note').innerHTML = '<strong>Your note:</strong> '
+      $('re-note').appendChild(document.createTextNode(r.note))
+    }
+    $('re-go').disabled = !r.hasTarget
+  }
+
+  function renderDrift(d) {
+    driftIds = d.nodes.map(n => n.id)
+    $('drift-text').textContent = 'You\'ve spent ' + d.minutes + ' min on things outside "' + (d.intent || 'your intent') + '":'
+    const ul = $('drift-list'); ul.innerHTML = ''
+    d.nodes.slice(0, 5).forEach(n => { const li = document.createElement('li'); li.textContent = n.name; ul.appendChild(li) })
+    if (d.nodes.length > 5) { const li = document.createElement('li'); li.textContent = '+' + (d.nodes.length - 5) + ' more'; ul.appendChild(li) }
+    show($('drift'), true)
+  }
+
+  onmessage = (e) => {
+    const m = e.data.pluginMessage
+    if (!m) return
+    switch (m.type) {
+      case 'state':
+        tunnel = m.tunnel
+        hasSelection = m.hasSelection
+        $('note').value = m.note || ''
+        $('threshold').value = String(m.threshold)
+        renderReentry(m.reentry)
+        renderTunnel()
+        break
+      case 'selection':
+        hasSelection = m.hasSelection
+        renderTunnel()
+        break
+      case 'drift':
+        renderDrift(m)
+        break
+      case 'adopted':
+        show($('drift'), false)
+        $('intent').value = ''
+        $('intent').placeholder = 'New intent for "' + m.name + '"?'
+        $('intent').focus()
+        toast('Tunnel reset. Name the new intent and re-enter.')
+        break
+      case 'error':
+        toast(m.text)
+        break
+    }
+  }
+
+  $('enter').onclick = () => send({ type: 'enter-tunnel', intent: $('intent').value })
+  $('exit').onclick = () => send({ type: 'exit-tunnel' })
+  $('re-go').onclick = () => send({ type: 'take-me-there' })
+  $('re-dismiss').onclick = () => send({ type: 'dismiss-reentry' })
+  $('drift-park').onclick = () => { show($('drift'), false); send({ type: 'park', ids: driftIds }) }
+  $('drift-adopt').onclick = () => send({ type: 'adopt', ids: driftIds })
+  $('drift-snooze').onclick = () => { show($('drift'), false); send({ type: 'snooze-drift' }) }
+  $('note').onchange = () => send({ type: 'save-note', note: $('note').value })
+  $('note').onblur = () => send({ type: 'save-note', note: $('note').value })
+  $('threshold').onchange = () => send({ type: 'set-threshold', minutes: Number($('threshold').value) })
+  $('lot').onclick = () => send({ type: 'open-parking-lot' })
+  $('intent').onkeydown = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('enter').click() } }
+
+  send({ type: 'ready' })
+</script>
+</body>
+</html>
